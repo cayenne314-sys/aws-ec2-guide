@@ -1,5 +1,9 @@
 # VSCodeでCloudFormationテンプレートを使った構築
 
+<!-- 共通CSS・JS読み込み -->
+<link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/command-generator.js"></script>
+
 ローカル環境でVSCodeを使用してCloudFormationテンプレートファイルからEC2インスタンスを構築します。
 
 ## 概要
@@ -195,6 +199,32 @@ Outputs:
 
 ### 1-4. CloudFormationでスタック作成
 
+<div class="command-generator">
+  <h4>📋 スタック作成コマンド生成</h4>
+  
+  <div class="form-group">
+    <label>スタック名:</label>
+    <input type="text" id="cfn-stack-name" value="ec2-test-stack" oninput="updateCreateStackCommand(); updateDescribeStackCommand(); updateDeleteStackCommand();">
+  </div>
+  
+  <div class="form-group">
+    <label>テンプレートファイル名:</label>
+    <input type="text" id="cfn-template-file" value="template.yaml" oninput="updateCreateStackCommand();">
+  </div>
+  
+  <div class="form-group">
+    <label>リージョン:</label>
+    <input type="text" id="cfn-region" value="ap-northeast-1" oninput="updateCreateStackCommand(); updateDeleteStackCommand();">
+  </div>
+  
+  <div class="command-output">
+    <h5>生成されたコマンド:</h5>
+    <pre id="cfn-create-command"></pre>
+    <button class="btn btn-primary" onclick="copyCreateStackCommand()">📋 コマンドをコピー</button>
+    <span id="cfn-create-success" class="copy-success"></span>
+  </div>
+</div>
+
 #### スタック作成コマンド
 ```cmd
 aws cloudformation create-stack --stack-name ec2-test-stack --template-body file://template.yaml --region ap-northeast-1 --capabilities CAPABILITY_IAM
@@ -216,6 +246,17 @@ aws cloudformation create-stack --stack-name ec2-test-stack --template-body file
 ---
 
 ### 1-5. スタック作成状態の確認
+
+<div class="command-generator">
+  <h4>📊 スタック状態確認コマンド</h4>
+  
+  <div class="command-output">
+    <p>上記で入力したスタック名を使用します。</p>
+    <pre id="cfn-describe-command"></pre>
+    <button class="btn btn-primary" onclick="copyDescribeStackCommand()">📋 コマンドをコピー</button>
+    <span id="cfn-describe-success" class="copy-success"></span>
+  </div>
+</div>
 
 #### スタック状態確認
 ```cmd
@@ -409,6 +450,50 @@ exit
 
 ### 2-4. セキュリティグループを更新
 
+<div class="command-generator">
+  <h4>🔒 セキュリティグループ更新コマンド生成</h4>
+  
+  <div class="form-group">
+    <label>セキュリティグループID:</label>
+    <input type="text" id="sg-id" value="sg-xxxxxxxxxxxxxxxxx" oninput="updateSecurityGroupCommands();">
+    <small>EC2コンソールまたはAWS CLIで確認</small>
+  </div>
+  
+  <div class="form-group">
+    <label>あなたのIPアドレス:</label>
+    <input type="text" id="sg-my-ip" value="133.201.31.192" oninput="updateSecurityGroupCommands();" placeholder="例: 133.201.31.192">
+    <small>※ echo $SSH_CLIENT で確認したIP</small>
+  </div>
+  
+  <div class="command-output">
+    <h5>1. SSH全開放ルール削除:</h5>
+    <pre id="sg-revoke-ssh"></pre>
+    <button class="btn btn-danger btn-small" onclick="copySGCommand('sg-revoke-ssh', 'sg-revoke-ssh-success')">📋 コピー</button>
+    <span id="sg-revoke-ssh-success" class="copy-success"></span>
+  </div>
+  
+  <div class="command-output">
+    <h5>2. HTTP全開放ルール削除:</h5>
+    <pre id="sg-revoke-http"></pre>
+    <button class="btn btn-danger btn-small" onclick="copySGCommand('sg-revoke-http', 'sg-revoke-http-success')">📋 コピー</button>
+    <span id="sg-revoke-http-success" class="copy-success"></span>
+  </div>
+  
+  <div class="command-output">
+    <h5>3. SSH用ルール追加（自分のIP）:</h5>
+    <pre id="sg-authorize-ssh"></pre>
+    <button class="btn btn-success btn-small" onclick="copySGCommand('sg-authorize-ssh', 'sg-authorize-ssh-success')">📋 コピー</button>
+    <span id="sg-authorize-ssh-success" class="copy-success"></span>
+  </div>
+  
+  <div class="command-output">
+    <h5>4. HTTP用ルール追加（自分のIP）:</h5>
+    <pre id="sg-authorize-http"></pre>
+    <button class="btn btn-success btn-small" onclick="copySGCommand('sg-authorize-http', 'sg-authorize-http-success')">📋 コピー</button>
+    <span id="sg-authorize-http-success" class="copy-success"></span>
+  </div>
+</div>
+
 #### 現在の全開放ルール（0.0.0.0/0）を削除
 
 ##### SSH用ルール削除
@@ -481,6 +566,17 @@ aws ec2 describe-instances --instance-ids i-0eb82246240955484 --query "Reservati
 ---
 
 ### 3-2. CloudFormationスタックを削除
+
+<div class="command-generator">
+  <h4>🗑️ スタック削除コマンド</h4>
+  
+  <div class="command-output">
+    <p>上記で入力したスタック名とリージョンを使用します。</p>
+    <pre id="cfn-delete-command"></pre>
+    <button class="btn btn-danger" onclick="copyDeleteStackCommand()">📋 コマンドをコピー</button>
+    <span id="cfn-delete-success" class="copy-success"></span>
+  </div>
+</div>
 
 > **💡 注意**  
 > EC2インスタンスが起動中（running）の状態であっても、CloudFormationスタックの削除は実行可能です。  
