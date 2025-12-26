@@ -9,13 +9,15 @@ nav_order: 1
 
 EC2インスタンスにSSH接続するためにキーペア(.pemファイル)の作成が必要です。
 
-{: .no_toc }
+<details markdown="1" class="toc-collapse">
+<summary>📑 目次</summary>
 
-## 目次
-{: .no_toc .text-delta }
+{: .no_toc }
 
 1. TOC
 {:toc}
+
+</details>
 
 ---
 

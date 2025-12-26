@@ -11,17 +11,18 @@ nav_order: 1
 
 # VSCodeでCloudFormationテンプレートを使った構築
 
+ローカル環境でVSCodeを使用してCloudFormationテンプレートファイルからEC2インスタンスを構築します。
+
+<details markdown="1" class="toc-collapse">
+<summary>📑 目次</summary>
 {: .no_toc }
 
-## 目次
-{: .no_toc .text-delta }
-
-1. TOC
+* TOC
 {:toc}
 
----
+</details>
 
-ローカル環境でVSCodeを使用してCloudFormationテンプレートファイルからEC2インスタンスを構築します。
+---
 
 ## 概要
 

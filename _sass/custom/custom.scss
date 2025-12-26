@@ -1,0 +1,34 @@
+// 目次の折り畳みスタイル
+details.toc-collapse {
+  margin-bottom: 20px;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  padding: 10px 15px;
+  background: #f6f8fa;
+}
+
+details.toc-collapse summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #0366d6;
+  list-style: none; /* デフォルトの三角を消す */
+}
+
+details.toc-collapse summary::-webkit-details-marker {
+  display: none; /* Chromeのデフォルトマーカーを消す */
+}
+
+details.toc-collapse summary::before {
+  content: "▶ ";
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+details.toc-collapse[open] summary::before {
+  transform: rotate(90deg);
+}
+
+details.toc-collapse .toc {
+  margin-top: 10px;
+  padding-left: 20px;
+}
