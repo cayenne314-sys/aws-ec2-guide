@@ -82,7 +82,7 @@ VSCodeで新しいファイルが開きます。
 
 以下の内容をコピー＆ペーストしてください：
 
-<details>
+<details markdown="1">
 <summary>template.yaml（クリックして展開）</summary>
 ```yaml
 AWSTemplateFormatVersion: '2010-09-09'
