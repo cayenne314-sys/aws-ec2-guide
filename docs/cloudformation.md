@@ -1,8 +1,25 @@
-# VSCodeでCloudFormationテンプレートを使った構築
+---
+layout: default
+title: CloudFormation構築
+parent: 構築方法
+nav_order: 1
+---
 
 <!-- 共通CSS・JS読み込み -->
 <link rel="stylesheet" href="../assets/css/style.css">
 <script src="../assets/js/command-generator.js"></script>
+
+# VSCodeでCloudFormationテンプレートを使った構築
+
+{: .no_toc }
+
+## 目次
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
 
 ローカル環境でVSCodeを使用してCloudFormationテンプレートファイルからEC2インスタンスを構築します。
 
@@ -42,7 +59,7 @@ C:\my-aws\aws-learning-projects\ec2-cloudformation
 ```
 
 #### フォルダ移動コマンド
-```cmd
+```batch
 cd "C:\my-aws\aws-learning-projects\ec2-cloudformation"
 ```
 
@@ -54,7 +71,7 @@ cd "C:\my-aws\aws-learning-projects\ec2-cloudformation"
 ### 1-3. CloudFormationテンプレートファイルを作成
 
 #### テンプレートファイルを開く
-```cmd
+```batch
 code ./template.yaml
 ```
 
@@ -226,7 +243,7 @@ Outputs:
 </div>
 
 #### スタック作成コマンド
-```cmd
+```batch
 aws cloudformation create-stack --stack-name ec2-test-stack --template-body file://template.yaml --region ap-northeast-1 --capabilities CAPABILITY_IAM
 ```
 
@@ -259,7 +276,7 @@ aws cloudformation create-stack --stack-name ec2-test-stack --template-body file
 </div>
 
 #### スタック状態確認
-```cmd
+```batch
 aws cloudformation describe-stacks --stack-name ec2-test-stack --query "Stacks[0].StackStatus"
 ```
 
@@ -269,7 +286,7 @@ aws cloudformation describe-stacks --stack-name ec2-test-stack --query "Stacks[0
 - `"CREATE_FAILED"` - 作成失敗
 
 #### EC2インスタンスIDの取得
-```cmd
+```batch
 aws cloudformation describe-stacks --stack-name ec2-test-stack --query "Stacks[0].Outputs[?OutputKey=='InstanceId'].OutputValue" --output text
 ```
 
@@ -285,7 +302,7 @@ i-0eb82246240955484
 ### 1-6. 作成されたインスタンスの状態確認
 
 #### インスタンスの状態確認
-```cmd
+```batch
 aws ec2 describe-instances --instance-ids i-0eb82246240955484 --query "Reservations[0].Instances[0].State.Name"
 ```
 
@@ -294,7 +311,7 @@ aws ec2 describe-instances --instance-ids i-0eb82246240955484 --query "Reservati
 - `"running"` - 実行中
 
 #### インスタンスのステータスチェック
-```cmd
+```batch
 aws ec2 describe-instance-status --instance-ids i-0eb82246240955484 --query "InstanceStatuses[0].InstanceStatus.Status"
 ```
 
@@ -307,7 +324,7 @@ aws ec2 describe-instance-status --instance-ids i-0eb82246240955484 --query "Ins
 ### 1-7. セキュリティグループの確認
 
 #### セキュリティグループIDの確認
-```cmd
+```batch
 aws ec2 describe-security-groups --filters "Name=group-name,Values=ec2-test-sg" --query "SecurityGroups[0].GroupId" --output text
 ```
 
@@ -317,7 +334,7 @@ sg-0a1b2c3d4e5f6g7h8
 ```
 
 #### セキュリティグループのルール確認
-```cmd
+```batch
 aws ec2 describe-security-groups --group-ids sg-0a1b2c3d4e5f6g7h8
 ```
 
@@ -328,7 +345,7 @@ aws ec2 describe-security-groups --group-ids sg-0a1b2c3d4e5f6g7h8
 ### 1-8. 接続情報の取得
 
 #### パブリックIPv4アドレス取得
-```cmd
+```batch
 aws ec2 describe-instances --instance-ids i-0eb82246240955484 --query "Reservations[0].Instances[0].PublicIpAddress" --output text
 ```
 
@@ -338,7 +355,7 @@ aws ec2 describe-instances --instance-ids i-0eb82246240955484 --query "Reservati
 ```
 
 #### パブリックDNS取得
-```cmd
+```batch
 aws ec2 describe-instances --instance-ids i-0eb82246240955484 --query "Reservations[0].Instances[0].PublicDnsName" --output text
 ```
 
@@ -384,21 +401,21 @@ Availability Zone: ap-northeast-1a
 ### 2-1. EC2インスタンスの起動確認
 
 #### インスタンス状態確認
-```cmd
+```batch
 aws ec2 describe-instances --instance-ids i-0eb82246240955484 --query "Reservations[0].Instances[0].State.Name"
 ```
 
 ステータスが `"running"` であることを確認。
 
 起動されていない場合は以下のコマンドで起動:
-```cmd
+```batch
 aws ec2 start-instances --instance-ids i-0eb82246240955484
 ```
 
 ---
 
 ### 2-2. EC2インスタンスへSSH接続
-```cmd
+```batch
 ssh -i my-ec2-test-key.pem ec2-user@13.158.139.175
 ```
 
@@ -497,12 +514,12 @@ exit
 #### 現在の全開放ルール（0.0.0.0/0）を削除
 
 ##### SSH用ルール削除
-```cmd
+```batch
 aws ec2 revoke-security-group-ingress --group-id sg-0a1b2c3d4e5f6g7h8 --protocol tcp --port 22 --cidr 0.0.0.0/0
 ```
 
 ##### HTTP用ルール削除
-```cmd
+```batch
 aws ec2 revoke-security-group-ingress --group-id sg-0a1b2c3d4e5f6g7h8 --protocol tcp --port 80 --cidr 0.0.0.0/0
 ```
 
@@ -511,7 +528,7 @@ aws ec2 revoke-security-group-ingress --group-id sg-0a1b2c3d4e5f6g7h8 --protocol
 #### 自分のIPアドレスでルールを追加
 
 ##### SSH用ルール追加（ポート22）
-```cmd
+```batch
 aws ec2 authorize-security-group-ingress --group-id sg-0a1b2c3d4e5f6g7h8 --protocol tcp --port 22 --cidr 133.201.31.192/32
 ```
 
@@ -520,7 +537,7 @@ aws ec2 authorize-security-group-ingress --group-id sg-0a1b2c3d4e5f6g7h8 --proto
 > `/32` は単一IPアドレスを意味します。
 
 ##### HTTP用ルール追加（ポート80）
-```cmd
+```batch
 aws ec2 authorize-security-group-ingress --group-id sg-0a1b2c3d4e5f6g7h8 --protocol tcp --port 80 --cidr 133.201.31.192/32
 ```
 
@@ -529,7 +546,7 @@ aws ec2 authorize-security-group-ingress --group-id sg-0a1b2c3d4e5f6g7h8 --proto
 ### 2-5. 接続確認
 
 #### SSH接続テスト
-```cmd
+```batch
 ssh -i my-ec2-test-key.pem ec2-user@13.158.139.175
 ```
 
@@ -552,12 +569,12 @@ ssh -i my-ec2-test-key.pem ec2-user@13.158.139.175
 スタック削除前にインスタンスを停止することも可能です（必須ではありません）。
 
 #### インスタンス停止コマンド
-```cmd
+```batch
 aws ec2 stop-instances --instance-ids i-0eb82246240955484
 ```
 
 #### 停止確認
-```cmd
+```batch
 aws ec2 describe-instances --instance-ids i-0eb82246240955484 --query "Reservations[0].Instances[0].State.Name"
 ```
 
@@ -583,12 +600,12 @@ aws ec2 describe-instances --instance-ids i-0eb82246240955484 --query "Reservati
 > EC2インスタンスを停止しておく必要はありません。
 
 #### スタック削除コマンド
-```cmd
+```batch
 aws cloudformation delete-stack --stack-name ec2-test-stack --region ap-northeast-1
 ```
 
 #### 削除確認
-```cmd
+```batch
 aws cloudformation describe-stacks --stack-name ec2-test-stack --query "Stacks[0].StackStatus"
 ```
 

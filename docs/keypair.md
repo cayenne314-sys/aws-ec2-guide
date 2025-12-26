@@ -1,6 +1,23 @@
+---
+layout: default
+title: キーペア作成
+parent: 準備
+nav_order: 1
+---
+
 # キーペア作成
 
 EC2インスタンスにSSH接続するためにキーペア(.pemファイル)の作成が必要です。
+
+{: .no_toc }
+
+## 目次
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
 
 ## 概要
 
@@ -52,7 +69,7 @@ EC2インスタンスにSSH接続するためにキーペア(.pemファイル)�
 - **Ctrl + J** でターミナルを開く
 
 ### 2. キーペアを作成するフォルダに移動
-```cmd
+```batch
 cd "C:\my-aws\aws-learning-projects\ec2-cloudformation"
 ```
 
@@ -60,7 +77,7 @@ cd "C:\my-aws\aws-learning-projects\ec2-cloudformation"
 > フォルダパスは各自の環境に合わせて変更してください
 
 ### 3. コマンド入力でキーペアを作成
-```cmd
+```batch
 aws ec2 create-key-pair --key-name my-ec2-test-key --query 'KeyMaterial' --output text --region ap-northeast-1 > my-ec2-test-key.pem
 ```
 
@@ -74,7 +91,7 @@ aws ec2 create-key-pair --key-name my-ec2-test-key --query 'KeyMaterial' --outpu
 AWSコンソール → EC2 → キーペア で作成されたキーペアを確認
 
 ### 5. キーペアファイルが作成されたかを確認
-```cmd
+```batch
 dir my-ec2-test-key.pem
 ```
 
@@ -128,7 +145,7 @@ It is required that your private key files are NOT accessible by others.
 ### EC2インスタンスにSSH接続
 
 権限設定後、以下のコマンドで接続：
-```cmd
+```batch
 ssh -i my-ec2-test-key.pem ec2-user@<EC2のパブリックIP>
 ```
 
