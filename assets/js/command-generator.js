@@ -320,8 +320,6 @@ function initDynamicPaths() {
 
 // ページ読み込み時に初期化
 document.addEventListener('DOMContentLoaded', function() {
-  // 既存の初期化...
-  
   // 動的パス機能を初期化
   initDynamicPaths();
 });
@@ -415,8 +413,6 @@ function initPathBuilder() {
 
 // ページ読み込み時に初期化
 document.addEventListener('DOMContentLoaded', function() {
-  // ...既存のコード
-  
   // パス組み立て機能を初期化
   initPathBuilder();
 });
@@ -608,8 +604,6 @@ function initTemplateGenerator() {
 
 // ページ読み込み時に初期化
 document.addEventListener('DOMContentLoaded', function() {
-  // ...既存のコード
-  
   // テンプレート生成機能を初期化
   initTemplateGenerator();
 });
