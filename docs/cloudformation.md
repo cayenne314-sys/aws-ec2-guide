@@ -171,36 +171,35 @@ Description: 'EC2 Instance with Amazon Linux 2023'
 
 ### 1-4. CloudFormationでスタック作成
 
-<div class="command-generator">
-  <h4>📋 スタック作成コマンド生成</h4>
-  
+以下のパラメータを入力してください。自動的にコマンドが生成されます。
+
+<div class="path-builder" data-group="cfn-create">
   <div class="form-group">
     <label>スタック名:</label>
-    <input type="text" id="cfn-stack-name" value="ec2-test-stack" oninput="updateCreateStackCommand(); updateDescribeStackCommand(); updateDeleteStackCommand();">
+    <input type="text" class="input-base-path" value="ec2-test-stack">
+    <small>CloudFormationスタックの名前</small>
   </div>
   
   <div class="form-group">
     <label>テンプレートファイル名:</label>
-    <input type="text" id="cfn-template-file" value="template.yaml" oninput="updateCreateStackCommand();">
+    <input type="text" class="input-sub-path" value="template.yaml">
+    <small>作成したテンプレートファイル名</small>
   </div>
   
   <div class="form-group">
     <label>リージョン:</label>
-    <input type="text" id="cfn-region" value="ap-northeast-1" oninput="updateCreateStackCommand(); updateDeleteStackCommand();">
-  </div>
-  
-  <div class="command-output">
-    <h5>生成されたコマンド:</h5>
-    <pre id="cfn-create-command"></pre>
-    <button class="btn btn-primary" onclick="copyCreateStackCommand()">📋 コマンドをコピー</button>
-    <span id="cfn-create-success" class="copy-success"></span>
+    <input type="text" class="input-region" value="ap-northeast-1">
+    <small>東京リージョン: ap-northeast-1</small>
   </div>
 </div>
 
-#### スタック作成コマンド
-```batch
-aws cloudformation create-stack --stack-name ec2-test-stack --template-body file://template.yaml --region ap-northeast-1 --capabilities CAPABILITY_IAM
-```
+#### 生成されたコマンド
+
+<div class="language-batch highlighter-rouge">
+  <div class="highlight">
+    <pre class="highlight" data-cfn-create-output><code>aws cloudformation create-stack --stack-name ec2-test-stack --template-body file://template.yaml --region ap-northeast-1 --capabilities CAPABILITY_IAM</code></pre>
+  </div>
+</div>
 
 **パラメータ説明**:
 - `--stack-name`: スタック名

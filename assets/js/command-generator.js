@@ -327,19 +327,18 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ========================================
-// パス組み立て機能
+// パス組み立て機能（拡張版）
 // ========================================
 
 /**
- * パス組み立て機能を初期化
+ * パス組み立て機能を初期化（コマンド生成にも対応）
  */
 function initPathBuilder() {
   // .path-builder クラスを持つコンテナを処理
   document.querySelectorAll('.path-builder').forEach(container => {
     const baseInput = container.querySelector('.input-base-path');
     const subInput = container.querySelector('.input-sub-path');
-    
-    if (!baseInput || !subInput) return;
+    const regionInput = container.querySelector('.input-region');
     
     // グループIDを取得
     const groupId = container.dataset.group;
@@ -347,11 +346,15 @@ function initPathBuilder() {
     
     // 更新関数
     function updatePaths() {
-      const basePath = baseInput.value.trim();
-      const subPath = subInput.value.trim();
+      const basePath = baseInput ? baseInput.value.trim() : '';
+      const subPath = subInput ? subInput.value.trim() : '';
+      const region = regionInput ? regionInput.value.trim() : '';
       
-      // パスを組み合わせ（末尾の\を削除してから結合）
-      const fullPath = basePath.replace(/\\+$/, '') + '\\' + subPath.replace(/^\\+/, '');
+      // パスを組み合わせ
+      let fullPath = '';
+      if (basePath && subPath) {
+        fullPath = basePath.replace(/\\+$/, '') + '\\' + subPath.replace(/^\\+/, '');
+      }
       
       // フルパス出力を更新
       const fullPathOutput = document.querySelector(`[data-path-output="${groupId}"]`);
@@ -367,17 +370,43 @@ function initPathBuilder() {
         codeElem.textContent = `cd "${fullPath}"`;
       }
       
-      // mkdirコマンド出力を更新（もしあれば）
+      // mkdirコマンド出力を更新
       const mkdirOutput = document.querySelector(`[data-mkdir-output="${groupId}"]`);
       if (mkdirOutput) {
         const codeElem = mkdirOutput.querySelector('code') || mkdirOutput;
         codeElem.textContent = `mkdir "${fullPath}"`;
       }
+      
+      // CloudFormation create-stack コマンド
+      const cfnCreateOutput = document.querySelector(`[data-cfn-create-output]`);
+      if (cfnCreateOutput && groupId === 'cfn-create') {
+        const stackName = basePath;
+        const templateFile = subPath;
+        const codeElem = cfnCreateOutput.querySelector('code') || cfnCreateOutput;
+        codeElem.textContent = `aws cloudformation create-stack --stack-name ${stackName} --template-body file://${templateFile} --region ${region} --capabilities CAPABILITY_IAM`;
+      }
+      
+      // CloudFormation describe-stacks コマンド
+      const cfnDescribeOutput = document.querySelector(`[data-cfn-describe-output]`);
+      if (cfnDescribeOutput && groupId === 'cfn-create') {
+        const stackName = basePath;
+        const codeElem = cfnDescribeOutput.querySelector('code') || cfnDescribeOutput;
+        codeElem.textContent = `aws cloudformation describe-stacks --stack-name ${stackName} --query "Stacks[0].StackStatus"`;
+      }
+      
+      // CloudFormation delete-stack コマンド
+      const cfnDeleteOutput = document.querySelector(`[data-cfn-delete-output]`);
+      if (cfnDeleteOutput && groupId === 'cfn-create') {
+        const stackName = basePath;
+        const codeElem = cfnDeleteOutput.querySelector('code') || cfnDeleteOutput;
+        codeElem.textContent = `aws cloudformation delete-stack --stack-name ${stackName} --region ${region}`;
+      }
     }
     
     // 入力時に更新
-    baseInput.addEventListener('input', updatePaths);
-    subInput.addEventListener('input', updatePaths);
+    if (baseInput) baseInput.addEventListener('input', updatePaths);
+    if (subInput) subInput.addEventListener('input', updatePaths);
+    if (regionInput) regionInput.addEventListener('input', updatePaths);
     
     // 初期表示
     updatePaths();
