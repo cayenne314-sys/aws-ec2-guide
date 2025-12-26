@@ -84,147 +84,88 @@ cd "C:\my-aws\aws-learning-projects\ec2-cloudformation"
 
 ### 1-3. CloudFormationテンプレートファイルを作成
 
-#### テンプレートファイルを開く
+#### パラメータ設定
+
+以下の値を入力すると、自動的にテンプレートファイルが生成されます。
+
+<div class="template-generator" data-template="cloudformation-yaml" data-group="cfn-template">
+  <h4>⚙️ テンプレート設定</h4>
+  
+  <div class="template-form">
+    <div class="form-group">
+      <label>キーペア名:</label>
+      <input type="text" data-var="KEY_NAME" value="my-ec2-test-key">
+      <small>作成済みのキーペア名</small>
+    </div>
+    
+    <div class="form-group">
+      <label>IAMロール名:</label>
+      <input type="text" data-var="ROLE_NAME" value="ec2-k18-01-role">
+      <small>EC2用のIAMロール</small>
+    </div>
+    
+    <div class="form-group">
+      <label>セキュリティグループ名:</label>
+      <input type="text" data-var="SG_NAME" value="ec2-k18-01-sg">
+      <small>セキュリティグループの名前</small>
+    </div>
+    
+    <div class="form-group">
+      <label>SSH接続元IP:</label>
+      <input type="text" data-var="SSH_IP" value="133.201.31.192/32">
+      <small>ポート22の許可IP（/32必須）</small>
+    </div>
+    
+    <div class="form-group">
+      <label>HTTP接続元IP:</label>
+      <input type="text" data-var="HTTP_IP" value="133.201.31.192/32">
+      <small>ポート80の許可IP（/32必須）</small>
+    </div>
+    
+    <div class="form-group">
+      <label>インスタンス名:</label>
+      <input type="text" data-var="INSTANCE_NAME" value="ec2-k18-01-instance-al2023">
+      <small>EC2インスタンスの名前</small>
+    </div>
+    
+    <div class="form-group">
+      <label>請求グループタグキー:</label>
+      <input type="text" data-var="TAG_KEY" value="CmBillingGroup">
+      <small>コスト管理用タグのキー</small>
+    </div>
+    
+    <div class="form-group">
+      <label>請求グループタグ値:</label>
+      <input type="text" data-var="TAG_VALUE" value="k18">
+      <small>コスト管理用タグの値</small>
+    </div>
+  </div>
+</div>
+
+#### テンプレートファイルを作成
+
+VSCodeで以下のコマンドを実行してファイルを開きます：
 ```batch
 code ./template.yaml
 ```
 
-VSCodeで新しいファイルが開きます。
-
-#### template.yaml の内容
-
 以下の内容をコピー＆ペーストしてください：
 
-<details markdown="1">
-<summary>template.yaml（クリックして展開）</summary>
+<details markdown="1" open>
+<summary>📄 template.yaml（生成されたテンプレート）</summary>
 ```yaml
 AWSTemplateFormatVersion: '2010-09-09'
 Description: 'EC2 Instance with Amazon Linux 2023'
-
-Parameters:
-  KeyName:
-    Type: String
-    Default: my-ec2-test-key
-    Description: Name of an existing EC2 KeyPair
-
-  LatestAmiId:
-    Type: AWS::SSM::Parameter::Value
-    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64
-    Description: Latest Amazon Linux 2023 AMI ID from SSM Parameter Store
-
-Resources:
-  EC2Role:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: ec2.amazonaws.com
-            Action: 'sts:AssumeRole'
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
-      Tags:
-        - Key: Name
-          Value: ec2-test-role
-        - Key: CmBillingGroup
-          Value: k18
-
-  EC2InstanceProfile:
-    Type: AWS::IAM::InstanceProfile
-    Properties:
-      Roles:
-        - !Ref EC2Role
-
-  EC2SecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupName: ec2-test-sg
-      GroupDescription: Security group for EC2 test instance
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 0.0.0.0/0
-          Description: Allow SSH from anywhere (TEMPORARY - CHANGE LATER)
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 0.0.0.0/0
-          Description: Allow HTTP from anywhere (TEMPORARY - CHANGE LATER)
-      Tags:
-        - Key: Name
-          Value: ec2-test-sg
-        - Key: CmBillingGroup
-          Value: k18
-
-  EC2Instance:
-    Type: AWS::EC2::Instance
-    Properties:
-      ImageId: !Ref LatestAmiId
-      InstanceType: t2.micro
-      KeyName: !Ref KeyName
-      SecurityGroupIds:
-        - !Ref EC2SecurityGroup
-      IamInstanceProfile: !Ref EC2InstanceProfile
-      UserData:
-        Fn::Base64: |
-          #!/bin/bash
-          yum update -y
-          yum install -y httpd
-          systemctl start httpd
-          systemctl enable httpd
-          echo "Hello from Amazon Linux 2023!" > /var/www/html/index.html
-          echo "Instance ID: $(ec2-metadata --instance-id | cut -d ' ' -f 2)" >> /var/www/html/index.html
-          echo "Availability Zone: $(ec2-metadata --availability-zone | cut -d ' ' -f 2)" >> /var/www/html/index.html
-      Tags:
-        - Key: Name
-          Value: ec2-test-instance-al2023
-        - Key: CmBillingGroup
-          Value: k18
-
-Outputs:
-  InstanceId:
-    Description: EC2 Instance ID
-    Value: !Ref EC2Instance
-  
-  PublicIP:
-    Description: Public IP Address
-    Value: !GetAtt EC2Instance.PublicIp
-  
-  PublicDNS:
-    Description: Public DNS Name
-    Value: !GetAtt EC2Instance.PublicDnsName
-  
-  WebsiteURL:
-    Description: Website URL
-    Value: !Sub 'http://${EC2Instance.PublicDnsName}'
-  
-  SSHCommand:
-    Description: SSH Connection Command
-    Value: !Sub 'ssh -i my-ec2-test-key.pem ec2-user@${EC2Instance.PublicIp}'
-  
-  AmiId:
-    Description: AMI ID used for this instance
-    Value: !Ref LatestAmiId
 ```
+{: data-template-output="cfn-template"}
 
 </details>
 
+> **💡 ヒント**  
+> 上記のパラメータを変更すると、テンプレートが自動的に更新されます。右上のコピーアイコンでコピーしてください。
+
 > **⚠️ 重要**  
-> 上記テンプレートでは `CidrIp: 0.0.0.0/0` （全世界に公開）になっています。  
-> これは一時的な措置で、後の手順で実際のIPアドレスに制限します。
-
-#### 主要なパラメータ
-
-| パラメータ | 値（例） | 説明 |
-|-----------|---------|------|
-| KeyName | `my-ec2-test-key` | 作成したキーペア名 |
-| EC2Role | `ec2-test-role` | EC2用IAMロール |
-| SecurityGroup | `ec2-test-sg` | セキュリティグループ名 |
-| InstanceName | `ec2-test-instance-al2023` | EC2インスタンス名 |
-| CmBillingGroup | `k18` | 請求グループタグ（任意） |
+> SSH_IP と HTTP_IP は自分の実際のIPアドレスに変更してください。初期値の `133.201.31.192/32` はサンプルです。
 
 ---
 

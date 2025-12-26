@@ -391,3 +391,196 @@ document.addEventListener('DOMContentLoaded', function() {
   // パス組み立て機能を初期化
   initPathBuilder();
 });
+
+// ========================================
+// テンプレート置換機能
+// ========================================
+
+/**
+ * テンプレート定義（拡張しやすいように外部化）
+ */
+const TEMPLATES = {
+  'cloudformation-yaml': `AWSTemplateFormatVersion: '2010-09-09'
+Description: 'EC2 Instance with Amazon Linux 2023'
+
+Parameters:
+  KeyName:
+    Type: String
+    Default: {{KEY_NAME}}
+    Description: Name of an existing EC2 KeyPair
+
+  LatestAmiId:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64
+    Description: Latest Amazon Linux 2023 AMI ID from SSM Parameter Store
+
+Resources:
+  EC2Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      Tags:
+        - Key: Name
+          Value: {{ROLE_NAME}}
+        - Key: {{TAG_KEY}}
+          Value: {{TAG_VALUE}}
+
+  EC2InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref EC2Role
+
+  EC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: {{SG_NAME}}
+      GroupDescription: Security group for EC2 test instance
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: {{SSH_IP}}
+          Description: Allow SSH from specific IP
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: {{HTTP_IP}}
+          Description: Allow HTTP from specific IP
+      Tags:
+        - Key: Name
+          Value: {{SG_NAME}}
+        - Key: {{TAG_KEY}}
+          Value: {{TAG_VALUE}}
+
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref LatestAmiId
+      InstanceType: t2.micro
+      KeyName: !Ref KeyName
+      SecurityGroupIds:
+        - !Ref EC2SecurityGroup
+      IamInstanceProfile: !Ref EC2InstanceProfile
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          yum update -y
+          yum install -y httpd
+          systemctl start httpd
+          systemctl enable httpd
+          echo "<h1>Hello from Amazon Linux 2023!</h1>" > /var/www/html/index.html
+          echo "<p>Instance ID: $(ec2-metadata --instance-id | cut -d ' ' -f 2)</p>" >> /var/www/html/index.html
+          echo "<p>Availability Zone: $(ec2-metadata --availability-zone | cut -d ' ' -f 2)</p>" >> /var/www/html/index.html
+      Tags:
+        - Key: Name
+          Value: {{INSTANCE_NAME}}
+        - Key: {{TAG_KEY}}
+          Value: {{TAG_VALUE}}
+
+Outputs:
+  InstanceId:
+    Description: EC2 Instance ID
+    Value: !Ref EC2Instance
+  
+  PublicIP:
+    Description: Public IP Address
+    Value: !GetAtt EC2Instance.PublicIp
+  
+  PublicDNS:
+    Description: Public DNS Name
+    Value: !GetAtt EC2Instance.PublicDnsName
+  
+  WebsiteURL:
+    Description: Website URL
+    Value: !Sub 'http://\${EC2Instance.PublicDnsName}'
+  
+  SSHCommand:
+    Description: SSH Connection Command
+    Value: !Sub 'ssh -i {{KEY_NAME}}.pem ec2-user@\${EC2Instance.PublicIp}'
+  
+  AmiId:
+    Description: AMI ID used for this instance
+    Value: !Ref LatestAmiId`
+};
+
+/**
+ * テンプレート置換処理
+ * @param {string} template - テンプレート文字列
+ * @param {Object} values - 置換する値のオブジェクト
+ * @returns {string} 置換後の文字列
+ */
+function renderTemplate(template, values) {
+  let result = template;
+  
+  // プレースホルダーを置換
+  for (const [key, value] of Object.entries(values)) {
+    const placeholder = new RegExp(`{{${key}}}`, 'g');
+    result = result.replace(placeholder, value);
+  }
+  
+  return result;
+}
+
+/**
+ * テンプレート生成機能を初期化
+ */
+function initTemplateGenerator() {
+  // .template-generator クラスを持つコンテナを処理
+  document.querySelectorAll('.template-generator').forEach(container => {
+    const templateName = container.dataset.template;
+    const groupId = container.dataset.group;
+    
+    if (!templateName || !groupId || !TEMPLATES[templateName]) {
+      console.error('Invalid template configuration:', templateName, groupId);
+      return;
+    }
+    
+    // すべての入力フィールドを取得
+    const inputs = container.querySelectorAll('input[data-var]');
+    
+    // 更新関数
+    function updateTemplate() {
+      // 入力値を収集
+      const values = {};
+      inputs.forEach(input => {
+        const varName = input.dataset.var;
+        values[varName] = input.value.trim();
+      });
+      
+      // テンプレートをレンダリング
+      const rendered = renderTemplate(TEMPLATES[templateName], values);
+      
+      // 出力先のコードブロックを更新
+      const outputs = document.querySelectorAll(`[data-template-output="${groupId}"]`);
+      outputs.forEach(output => {
+        const codeElem = output.querySelector('code') || output;
+        codeElem.textContent = rendered;
+      });
+    }
+    
+    // 各入力フィールドにイベントリスナーを追加
+    inputs.forEach(input => {
+      input.addEventListener('input', updateTemplate);
+    });
+    
+    // 初期表示
+    updateTemplate();
+  });
+}
+
+// ページ読み込み時に初期化
+document.addEventListener('DOMContentLoaded', function() {
+  // ...既存のコード
+  
+  // テンプレート生成機能を初期化
+  initTemplateGenerator();
+});
