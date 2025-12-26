@@ -49,23 +49,36 @@ nav_order: 1
 
 ### 1-2. EC2構築用フォルダに移動
 
-#### 作業フォルダ（例）
-```
-C:\my-aws
-```
+作業フォルダとプロジェクトフォルダを入力してください。自動的にフルパスとコマンドが生成されます。
 
-#### EC2構築用のテンプレートを作成するフォルダ
+<div class="path-builder" data-group="ec2-path">
+  <div class="form-group">
+    <label>作業フォルダ:</label>
+    <input type="text" class="input-base-path" value="C:\my-aws">
+    <small>ベースとなる作業フォルダのパス</small>
+  </div>
+  
+  <div class="form-group">
+    <label>EC2構築用フォルダ:</label>
+    <input type="text" class="input-sub-path" value="aws-learning-projects\ec2-cloudformation">
+    <small>プロジェクト用のサブフォルダ</small>
+  </div>
+</div>
+
+#### フォルダ作成コマンド
+```batch
+mkdir "C:\my-aws\aws-learning-projects\ec2-cloudformation"
 ```
-C:\my-aws\aws-learning-projects\ec2-cloudformation
-```
+{: data-mkdir-output="ec2-path"}
 
 #### フォルダ移動コマンド
 ```batch
 cd "C:\my-aws\aws-learning-projects\ec2-cloudformation"
 ```
+{: data-cd-output="ec2-path"}
 
 > **💡 ヒント**  
-> フォルダパスは各自の環境に合わせて変更してください
+> フォルダパスは各自の環境に合わせて上記の入力欄で変更してください。コマンドが自動的に更新されます。
 
 ---
 

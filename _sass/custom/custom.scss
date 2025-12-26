@@ -32,3 +32,99 @@ details.toc-collapse .toc {
   margin-top: 10px;
   padding-left: 20px;
 }
+
+// ========================================
+// 動的パス入力フィールド
+// ========================================
+
+.dynamic-path {
+  margin: 15px 0;
+  padding: 15px;
+  background: #f6f8fa;
+  border-radius: 6px;
+  border-left: 4px solid #0366d6;
+}
+
+.dynamic-path input[type="text"] {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d1d5da;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  background: white;
+  box-sizing: border-box;
+}
+
+.dynamic-path input[type="text"]:focus {
+  outline: none;
+  border-color: #0366d6;
+  box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.1);
+}
+
+.dynamic-path pre {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: #282c34;
+  color: #abb2bf;
+  padding: 12px;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-size: 14px;
+}
+
+.dynamic-path .copy-btn {
+  margin-top: 8px;
+}
+
+// ========================================
+// パス組み立て入力フィールド
+// ========================================
+
+.path-builder {
+  margin: 20px 0;
+  padding: 15px;
+  background: #f6f8fa;
+  border-radius: 6px;
+  border-left: 4px solid #0366d6;
+}
+
+.path-builder .form-group {
+  margin-bottom: 12px;
+}
+
+.path-builder .form-group:last-child {
+  margin-bottom: 0;
+}
+
+.path-builder label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #24292e;
+  font-size: 14px;
+}
+
+.path-builder input[type="text"] {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d1d5da;
+  border-radius: 4px;
+  font-family: 'Courier New', 'Consolas', monospace;
+  font-size: 14px;
+  background: white;
+  box-sizing: border-box;
+}
+
+.path-builder input[type="text"]:focus {
+  outline: none;
+  border-color: #0366d6;
+  box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.1);
+}
+
+.path-builder small {
+  display: block;
+  color: #586069;
+  font-size: 12px;
+  margin-top: 4px;
+}

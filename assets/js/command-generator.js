@@ -262,3 +262,132 @@ document.addEventListener('DOMContentLoaded', function() {
     updateSecurityGroupCommands();
   }
 });
+
+// ========================================
+// 動的パス置換機能
+// ========================================
+
+/**
+ * 動的パス入力フィールドを初期化
+ */
+function initDynamicPaths() {
+  // .dynamic-path クラスを持つすべての要素を処理
+  document.querySelectorAll('.dynamic-path').forEach(container => {
+    const input = container.querySelector('input[type="text"]');
+    const codeBlock = container.querySelector('pre code, pre');
+    
+    if (!input || !codeBlock) return;
+    
+    // 初期値を保存（テンプレート）
+    const template = codeBlock.textContent;
+    
+    // コピーボタンを追加
+    if (!container.querySelector('.copy-btn')) {
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'btn btn-small btn-primary copy-btn';
+      copyBtn.textContent = '? コピー';
+      copyBtn.style.marginTop = '8px';
+      
+      const successMsg = document.createElement('span');
+      successMsg.className = 'copy-success';
+      successMsg.style.marginLeft = '10px';
+      
+      copyBtn.addEventListener('click', async () => {
+        await copyToClipboard(codeBlock.textContent, null);
+        successMsg.textContent = '? コピーしました！';
+        successMsg.style.display = 'inline';
+        setTimeout(() => {
+          successMsg.textContent = '';
+          successMsg.style.display = 'none';
+        }, 2000);
+      });
+      
+      const btnContainer = document.createElement('div');
+      btnContainer.appendChild(copyBtn);
+      btnContainer.appendChild(successMsg);
+      container.appendChild(btnContainer);
+    }
+    
+    // 入力時にコードブロックを更新
+    input.addEventListener('input', () => {
+      codeBlock.textContent = input.value;
+    });
+    
+    // 初期表示を更新
+    codeBlock.textContent = input.value;
+  });
+}
+
+// ページ読み込み時に初期化
+document.addEventListener('DOMContentLoaded', function() {
+  // 既存の初期化...
+  
+  // 動的パス機能を初期化
+  initDynamicPaths();
+});
+
+// ========================================
+// パス組み立て機能
+// ========================================
+
+/**
+ * パス組み立て機能を初期化
+ */
+function initPathBuilder() {
+  // .path-builder クラスを持つコンテナを処理
+  document.querySelectorAll('.path-builder').forEach(container => {
+    const baseInput = container.querySelector('.input-base-path');
+    const subInput = container.querySelector('.input-sub-path');
+    
+    if (!baseInput || !subInput) return;
+    
+    // グループIDを取得
+    const groupId = container.dataset.group;
+    if (!groupId) return;
+    
+    // 更新関数
+    function updatePaths() {
+      const basePath = baseInput.value.trim();
+      const subPath = subInput.value.trim();
+      
+      // パスを組み合わせ（末尾の\を削除してから結合）
+      const fullPath = basePath.replace(/\\+$/, '') + '\\' + subPath.replace(/^\\+/, '');
+      
+      // フルパス出力を更新
+      const fullPathOutput = document.querySelector(`[data-path-output="${groupId}"]`);
+      if (fullPathOutput) {
+        const codeElem = fullPathOutput.querySelector('code') || fullPathOutput;
+        codeElem.textContent = fullPath;
+      }
+      
+      // cdコマンド出力を更新
+      const cdOutput = document.querySelector(`[data-cd-output="${groupId}"]`);
+      if (cdOutput) {
+        const codeElem = cdOutput.querySelector('code') || cdOutput;
+        codeElem.textContent = `cd "${fullPath}"`;
+      }
+      
+      // mkdirコマンド出力を更新（もしあれば）
+      const mkdirOutput = document.querySelector(`[data-mkdir-output="${groupId}"]`);
+      if (mkdirOutput) {
+        const codeElem = mkdirOutput.querySelector('code') || mkdirOutput;
+        codeElem.textContent = `mkdir "${fullPath}"`;
+      }
+    }
+    
+    // 入力時に更新
+    baseInput.addEventListener('input', updatePaths);
+    subInput.addEventListener('input', updatePaths);
+    
+    // 初期表示
+    updatePaths();
+  });
+}
+
+// ページ読み込み時に初期化
+document.addEventListener('DOMContentLoaded', function() {
+  // ...既存のコード
+  
+  // パス組み立て機能を初期化
+  initPathBuilder();
+});
