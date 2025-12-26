@@ -243,6 +243,7 @@ aws cloudformation describe-stacks --stack-name ec2-test-stack --query "Stacks[0
 ```batch
 aws cloudformation describe-stacks --stack-name ec2-test-stack --query "Stacks[0].Outputs[?OutputKey=='InstanceId'].OutputValue" --output text
 ```
+{: .wrap-code}
 
 **出力例**:
 ```

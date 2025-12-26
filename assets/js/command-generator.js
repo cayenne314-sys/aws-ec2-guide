@@ -263,66 +263,66 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// ========================================
-// 動的パス置換機能
-// ========================================
+// // ========================================
+// // 動的パス置換機能
+// // ========================================
 
-/**
- * 動的パス入力フィールドを初期化
- */
-function initDynamicPaths() {
-  // .dynamic-path クラスを持つすべての要素を処理
-  document.querySelectorAll('.dynamic-path').forEach(container => {
-    const input = container.querySelector('input[type="text"]');
-    const codeBlock = container.querySelector('pre code, pre');
+// /**
+//  * 動的パス入力フィールドを初期化
+//  */
+// function initDynamicPaths() {
+//   // .dynamic-path クラスを持つすべての要素を処理
+//   document.querySelectorAll('.dynamic-path').forEach(container => {
+//     const input = container.querySelector('input[type="text"]');
+//     const codeBlock = container.querySelector('pre code, pre');
     
-    if (!input || !codeBlock) return;
+//     if (!input || !codeBlock) return;
     
-    // 初期値を保存（テンプレート）
-    const template = codeBlock.textContent;
+//     // 初期値を保存（テンプレート）
+//     const template = codeBlock.textContent;
     
-    // コピーボタンを追加
-    if (!container.querySelector('.copy-btn')) {
-      const copyBtn = document.createElement('button');
-      copyBtn.className = 'btn btn-small btn-primary copy-btn';
-      copyBtn.textContent = '? コピー';
-      copyBtn.style.marginTop = '8px';
+//     // コピーボタンを追加
+//     if (!container.querySelector('.copy-btn')) {
+//       const copyBtn = document.createElement('button');
+//       copyBtn.className = 'btn btn-small btn-primary copy-btn';
+//       copyBtn.textContent = '? コピー';
+//       copyBtn.style.marginTop = '8px';
       
-      const successMsg = document.createElement('span');
-      successMsg.className = 'copy-success';
-      successMsg.style.marginLeft = '10px';
+//       const successMsg = document.createElement('span');
+//       successMsg.className = 'copy-success';
+//       successMsg.style.marginLeft = '10px';
       
-      copyBtn.addEventListener('click', async () => {
-        await copyToClipboard(codeBlock.textContent, null);
-        successMsg.textContent = '? コピーしました！';
-        successMsg.style.display = 'inline';
-        setTimeout(() => {
-          successMsg.textContent = '';
-          successMsg.style.display = 'none';
-        }, 2000);
-      });
+//       copyBtn.addEventListener('click', async () => {
+//         await copyToClipboard(codeBlock.textContent, null);
+//         successMsg.textContent = '? コピーしました！';
+//         successMsg.style.display = 'inline';
+//         setTimeout(() => {
+//           successMsg.textContent = '';
+//           successMsg.style.display = 'none';
+//         }, 2000);
+//       });
       
-      const btnContainer = document.createElement('div');
-      btnContainer.appendChild(copyBtn);
-      btnContainer.appendChild(successMsg);
-      container.appendChild(btnContainer);
-    }
+//       const btnContainer = document.createElement('div');
+//       btnContainer.appendChild(copyBtn);
+//       btnContainer.appendChild(successMsg);
+//       container.appendChild(btnContainer);
+//     }
     
-    // 入力時にコードブロックを更新
-    input.addEventListener('input', () => {
-      codeBlock.textContent = input.value;
-    });
+//     // 入力時にコードブロックを更新
+//     input.addEventListener('input', () => {
+//       codeBlock.textContent = input.value;
+//     });
     
-    // 初期表示を更新
-    codeBlock.textContent = input.value;
-  });
-}
+//     // 初期表示を更新
+//     codeBlock.textContent = input.value;
+//   });
+// }
 
-// ページ読み込み時に初期化
-document.addEventListener('DOMContentLoaded', function() {
-  // 動的パス機能を初期化
-  initDynamicPaths();
-});
+// // ページ読み込み時に初期化
+// document.addEventListener('DOMContentLoaded', function() {
+//   // 動的パス機能を初期化
+//   initDynamicPaths();
+// });
 
 // ========================================
 // パス組み立て機能（拡張版）

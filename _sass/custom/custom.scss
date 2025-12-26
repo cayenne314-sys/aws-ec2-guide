@@ -225,3 +225,39 @@ details pre {
   max-height: 500px; // 最大高さを設定してスクロール
   overflow-y: auto;
 }
+
+// ========================================
+// コマンド折り返し表示
+// ========================================
+
+// // data-cfn-*-output 属性を持つコードブロックは折り返す
+// [data-cfn-create-output] code,
+// [data-cfn-describe-output] code,
+// [data-cfn-delete-output] code {
+//   white-space: pre-wrap !important;     // 折り返す
+//   word-wrap: break-word !important;     // 単語の途中でも折り返す
+//   overflow-x: visible !important;       // 横スクロールバーを消す
+// }
+
+// または、すべてのコマンド出力を折り返す場合
+[data-cfn-create-output],
+[data-cfn-describe-output],
+[data-cfn-delete-output] {
+  pre {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+  }
+  
+  code {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+  }
+}
+
+// .wrap-code クラスで折り返し
+.wrap-code pre,
+.wrap-code code {
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  overflow-x: visible !important;
+}

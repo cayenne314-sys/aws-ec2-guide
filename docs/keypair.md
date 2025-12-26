@@ -82,6 +82,7 @@ cd "C:\my-aws\aws-learning-projects\ec2-cloudformation"
 ```batch
 aws ec2 create-key-pair --key-name my-ec2-test-key --query 'KeyMaterial' --output text --region ap-northeast-1 > my-ec2-test-key.pem
 ```
+{: .wrap-code}
 
 **パラメータ説明**:
 - `--key-name`: キーペアの名前
