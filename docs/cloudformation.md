@@ -278,18 +278,33 @@ aws ec2 describe-instance-status --instance-ids i-xxxxxxxxxxxxxxxxx --query "Ins
 
 #### セキュリティグループIDの確認
 ```batch
-aws ec2 describe-security-groups --filters "Name=group-name,Values=ec2-test-sg" --query "SecurityGroups[0].GroupId" --output text
+aws ec2 describe-security-groups --filters "Name=group-name,Values=ec2-k18-01-sg" --query "SecurityGroups[0].GroupId" --output text
 ```
+{: data-output-group="sg-info" data-command-type="sg-get-id"}
+{: .wrap-code}
 
 **出力例**:
 ```
-sg-0a1b2c3d4e5f6g7h8
+sg-xxxxxxxxxxxxxxxxx
 ```
+
+取得したセキュリティグループIDを以下に入力してください。
+
+<div class="text-builder" data-group="sg-info">
+  <div class="form-group">
+    <label>セキュリティグループID:</label>
+    <input type="text" data-var="SECURITY_GROUP_ID" value="sg-xxxxxxxxxxxxxxxxx" placeholder="sg-xxxxxxxxxxxxxxxxx">
+    <small>CloudFormationで作成されたセキュリティグループID</small>
+  </div>
+</div>
+
+---
 
 #### セキュリティグループのルール確認
 ```batch
-aws ec2 describe-security-groups --group-ids sg-0a1b2c3d4e5f6g7h8
+aws ec2 describe-security-groups --group-ids sg-xxxxxxxxxxxxxxxxx
 ```
+{: data-output-group="sg-info" data-command-type="sg-describe"}
 
 現在の設定（SSH: 0.0.0.0/0、HTTP: 0.0.0.0/0）が確認できます。
 
@@ -299,42 +314,66 @@ aws ec2 describe-security-groups --group-ids sg-0a1b2c3d4e5f6g7h8
 
 #### パブリックIPv4アドレス取得
 ```batch
-aws ec2 describe-instances --instance-ids i-0eb82246240955484 --query "Reservations[0].Instances[0].PublicIpAddress" --output text
+aws ec2 describe-instances --instance-ids i-xxxxxxxxxxxxxxxxx --query "Reservations[0].Instances[0].PublicIpAddress" --output text
 ```
+{: data-output-group="connection-info" data-command-type="ec2-get-public-ip"}
+{: .wrap-code}
 
 **出力例**:
 ```
-13.158.139.175
+x.x.x.x
 ```
 
 #### パブリックDNS取得
 ```batch
-aws ec2 describe-instances --instance-ids i-0eb82246240955484 --query "Reservations[0].Instances[0].PublicDnsName" --output text
+aws ec2 describe-instances --instance-ids i-xxxxxxxxxxxxxxxxx --query "Reservations[0].Instances[0].PublicDnsName" --output text
 ```
+{: data-output-group="connection-info" data-command-type="ec2-get-public-dns"}
+{: .wrap-code}
 
 **出力例**:
 ```
-ec2-13-158-139-175.ap-northeast-1.compute.amazonaws.com
+ec2-x-x-x-x.ap-northeast-1.compute.amazonaws.com
 ```
+
+取得した接続情報を以下に入力してください。
+
+<div class="text-builder" data-group="connection-info">
+  <div class="form-group">
+    <label>パブリックIPv4アドレス:</label>
+    <input type="text" data-var="PUBLIC_IP" value="x.x.x.x" placeholder="x.x.x.x">
+    <small>EC2インスタンスのパブリックIPアドレス</small>
+  </div>
+  
+  <div class="form-group">
+    <label>パブリックDNS:</label>
+    <input type="text" data-var="PUBLIC_DNS" value="ec2-x-x-x-x.ap-northeast-1.compute.amazonaws.com" placeholder="ec2-x-x-x-x.ap-northeast-1.compute.amazonaws.com">
+    <small>EC2インスタンスのパブリックDNS名</small>
+  </div>
+</div>
 
 ---
 
 ### 1-9. Webアクセス確認
 
-ブラウザで以下のURLにアクセス:
-```
-http://ec2-13-158-139-175.ap-northeast-1.compute.amazonaws.com
-```
+ブラウザで以下のURLにアクセスしてください。
 
-または
+#### URL（IP）
 ```
 http://13.158.139.175
 ```
+{: data-output-group="web-url" data-command-type="web-url-ip"}
+
+#### URL（DNS）
+```
+http://ec2-13-158-139-175.ap-northeast-1.compute.amazonaws.com
+```
+{: data-output-group="web-url" data-command-type="web-url-dns"}
 
 **表示内容**:
 ```
 Hello from Amazon Linux 2023!
-Instance ID: i-0eb82246240955484
+Instance ID: i-xxxxxxxxxxxxxxxxx
 Availability Zone: ap-northeast-1a
 ```
 

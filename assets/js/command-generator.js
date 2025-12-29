@@ -435,9 +435,20 @@ const COMMAND_TEMPLATES = {
   // EC2系コマンド
   'ec2-describe-state': 'aws ec2 describe-instances --instance-ids {{INSTANCE_ID}} --query "Reservations[0].Instances[0].State.Name"',
   'ec2-describe-status': 'aws ec2 describe-instance-status --instance-ids {{INSTANCE_ID}} --query "InstanceStatuses[0].InstanceStatus.Status"',
+  'ec2-get-public-ip': 'aws ec2 describe-instances --instance-ids {{INSTANCE_ID}} --query "Reservations[0].Instances[0].PublicIpAddress" --output text',
+  'ec2-get-public-dns': 'aws ec2 describe-instances --instance-ids {{INSTANCE_ID}} --query "Reservations[0].Instances[0].PublicDnsName" --output text',
+  
+  // セキュリティグループ系コマンド
+  'sg-get-id': 'aws ec2 describe-security-groups --filters "Name=group-name,Values={{SG_NAME}}" --query "SecurityGroups[0].GroupId" --output text',
+  'sg-describe': 'aws ec2 describe-security-groups --group-ids {{SECURITY_GROUP_ID}}',
+  
+  // Web URL生成
+  'web-url-dns': 'http://{{PUBLIC_DNS}}',
+  'web-url-ip': 'http://{{PUBLIC_IP}}',
 
-    // テンプレートファイル（長いYAMLも同じ）
-  'cloudformation-yaml': `AWSTemplateFormatVersion: '2010-09-09'
+  // テンプレートファイル
+  'cloudformation-yaml': 
+`AWSTemplateFormatVersion: '2010-09-09'
 Description: 'EC2 Instance with Amazon Linux 2023'
 
 Parameters:
