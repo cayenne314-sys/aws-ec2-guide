@@ -24,6 +24,9 @@ const COMMAND_TEMPLATES = {
   'ec2-get-public-ip': 'aws ec2 describe-instances --instance-ids {{INSTANCE_ID}} --query "Reservations[0].Instances[0].PublicIpAddress" --output text',
   'ec2-get-public-dns': 'aws ec2 describe-instances --instance-ids {{INSTANCE_ID}} --query "Reservations[0].Instances[0].PublicDnsName" --output text',
   
+  // EC2停止系コマンド
+  'ec2-stop': 'aws ec2 stop-instances --instance-ids {{INSTANCE_ID}}',
+
   // セキュリティグループ系コマンド
   'sg-get-id': 'aws ec2 describe-security-groups --filters "Name=group-name,Values={{SG_NAME}}" --query "SecurityGroups[0].GroupId" --output text',
   'sg-describe': 'aws ec2 describe-security-groups --group-ids {{SECURITY_GROUP_ID}}',

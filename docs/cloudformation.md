@@ -393,30 +393,22 @@ Availability Zone: ap-northeast-1a
 
 #### インスタンス停止コマンド
 ```batch
-aws ec2 stop-instances --instance-ids i-0eb82246240955484
+aws ec2 stop-instances --instance-ids i-xxxxxxxxxxxxxxxxx
 ```
+{: data-output-group="ec2-stop" data-command-type="ec2-stop"}
 
 #### 停止確認
 ```batch
-aws ec2 describe-instances --instance-ids i-0eb82246240955484 --query "Reservations[0].Instances[0].State.Name"
+aws ec2 describe-instances --instance-ids i-xxxxxxxxxxxxxxxxx --query "Reservations[0].Instances[0].State.Name"
 ```
+{: data-output-group="ec2-stop" data-command-type="ec2-describe-state"}
+{: .wrap-code}
 
 ステータスが `"stopped"` になれば停止完了。
 
 ---
 
 ### 2-2. CloudFormationスタックを削除
-
-<div class="command-generator">
-  <h4>🗑️ スタック削除コマンド</h4>
-  
-  <div class="command-output">
-    <p>上記で入力したスタック名とリージョンを使用します。</p>
-    <pre id="cfn-delete-command"></pre>
-    <button class="btn btn-danger" onclick="copyDeleteStackCommand()">📋 コマンドをコピー</button>
-    <span id="cfn-delete-success" class="copy-success"></span>
-  </div>
-</div>
 
 > **💡 注意**  
 > EC2インスタンスが起動中（running）の状態であっても、CloudFormationスタックの削除は実行可能です。  
@@ -426,11 +418,13 @@ aws ec2 describe-instances --instance-ids i-0eb82246240955484 --query "Reservati
 ```batch
 aws cloudformation delete-stack --stack-name ec2-test-stack --region ap-northeast-1
 ```
+{: data-output-group="cfn-delete" data-command-type="cfn-delete"}
 
 #### 削除確認
 ```batch
 aws cloudformation describe-stacks --stack-name ec2-test-stack --query "Stacks[0].StackStatus"
 ```
+{: data-output-group="cfn-delete" data-command-type="cfn-describe"}
 
 **出力の変化**:
 - `"DELETE_IN_PROGRESS"` - 削除中
@@ -440,6 +434,7 @@ aws cloudformation describe-stacks --stack-name ec2-test-stack --query "Stacks[0
 ```
 An error occurred (ValidationError) when calling the DescribeStacks operation: Stack with id ec2-test-stack does not exist
 ```
+{: .wrap-code}
 
 このエラーが出れば完全に削除されています。
 
@@ -453,11 +448,5 @@ An error occurred (ValidationError) when calling the DescribeStacks operation: S
 2. **AWS CLIでのスタック作成** - コマンドラインからのデプロイ
 3. **セキュリティグループの設定** - IP制限によるアクセス制御
 4. **リソースの削除** - 不要なリソースのクリーンアップ
-
-### 次のステップ
-
-- [コマンド生成ツール](../tools/command-generator.html)を使って効率的にコマンドを作成
-- 他のAWSサービス（RDS、S3など）との連携を試す
-- CloudFormationテンプレートをカスタマイズ
 
 [← トップページに戻る](../index.md) | [← 前へ: キーペア作成](keypair.md)
