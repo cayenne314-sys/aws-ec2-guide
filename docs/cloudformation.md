@@ -153,7 +153,10 @@ cd "C:\my-aws\aws-learning-projects\ec2-cloudformation"
 #### 生成されたテンプレート
 
 <details markdown="1" open>
-<summary>📄 template.yaml</summary>
+<!-- <summary>📄 <span data-text-template="{{TEMPLATE_FILE}}">template.yaml</span></summary> -->
+<!-- <summary>📄 <span data-text-template="&#123;&#123;TEMPLATE_FILE&#125;&#125;">template.yaml</span></summary> -->
+<summary>📄 <span data-text-template="{% raw %}{{TEMPLATE_FILE}}{% endraw %}">template.yaml</span></summary>
+<!-- <summary>📄 <span data-text-output="template-filename">template.yaml</span></summary> -->
 ```yaml
 AWSTemplateFormatVersion: '2010-09-09'
 ...

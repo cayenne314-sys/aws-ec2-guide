@@ -435,7 +435,7 @@ const COMMAND_TEMPLATES = {
   // EC2系コマンド
   'ec2-describe-state': 'aws ec2 describe-instances --instance-ids {{INSTANCE_ID}} --query "Reservations[0].Instances[0].State.Name"',
   'ec2-describe-status': 'aws ec2 describe-instance-status --instance-ids {{INSTANCE_ID}} --query "InstanceStatuses[0].InstanceStatus.Status"',
-  
+
     // テンプレートファイル（長いYAMLも同じ）
   'cloudformation-yaml': `AWSTemplateFormatVersion: '2010-09-09'
 Description: 'EC2 Instance with Amazon Linux 2023'
@@ -589,7 +589,7 @@ function initTextBuilder() {
       globalValues.FULL_PATH = basePath + '\\' + subPath;
     }
     
-    // すべての出力を更新
+    // コードブロックの出力を更新
     document.querySelectorAll('[data-output-group]').forEach(output => {
       const commandType = output.dataset.commandType;
       
@@ -599,6 +599,19 @@ function initTextBuilder() {
         
         const codeElem = output.querySelector('code') || output;
         codeElem.textContent = command;
+      }
+    });
+    
+    // テキスト要素の出力を更新（★ 修正 ★）
+    document.querySelectorAll('[data-text-template]').forEach(element => {
+      const template = element.dataset.textTemplate;
+      if (template) {
+        const text = replaceTemplate(template, globalValues);
+        
+        // 既存のテキストと違う場合のみ更新
+        if (element.textContent !== text) {
+          element.textContent = text;
+        }
       }
     });
   }
