@@ -418,91 +418,108 @@
 // });
 
 // ========================================
-// テキスト組み立て機能
+// コマンドテンプレート定義
+// ========================================
+
+const COMMAND_TEMPLATES = {
+  'mkdir': 'mkdir "{{FULL_PATH}}"',
+  'cd': 'cd "{{FULL_PATH}}"',
+  'rmdir': 'rmdir /s /q "{{FULL_PATH}}"',
+  // 新しいコマンドを追加したい場合はここに追加
+};
+// ========================================
+// 汎用テキスト組み立て機能
 // ========================================
 
 /**
- * テキスト組み立て機能を初期化（コマンド生成にも対応）
+ * テンプレート文字列のプレースホルダーを置換
+ */
+function replaceTemplate(template, values) {
+  let result = template;
+  for (const [key, value] of Object.entries(values)) {
+    const regex = new RegExp(`{{${key}}}`, 'g');
+    result = result.replace(regex, value);
+  }
+  return result;
+}
+
+// ========================================
+// テキスト組み立て機能（修正版）
+// ========================================
+
+/**
+ * テキスト組み立て機能を初期化
  */
 function initTextBuilder() {
-  // .text-builder クラスを持つコンテナを処理
+  console.log('=== initTextBuilder 開始 ===');
+  
   document.querySelectorAll('.text-builder').forEach(container => {
     const baseInput = container.querySelector('.input-base-text');
     const subInput = container.querySelector('.input-sub-text');
-    const regionInput = container.querySelector('.input-region');
     
-    // グループIDを取得
+    console.log('baseInput:', baseInput);
+    console.log('subInput:', subInput);
+    
+    if (!baseInput || !subInput) {
+      console.error('入力フィールドが見つかりません');
+      return;
+    }
+    
     const groupId = container.dataset.group;
-    if (!groupId) return;
+    console.log('groupId:', groupId);
     
-    // 更新関数
+    if (!groupId) {
+      console.error('data-group属性がありません');
+      return;
+    }
+    
     function updateTexts() {
-      const baseText = baseInput ? baseInput.value.trim() : '';
-      const subText = subInput ? subInput.value.trim() : '';
-      const region = regionInput ? regionInput.value.trim() : '';
+      const baseText = baseInput.value.trim();
+      const subText = subInput.value.trim();
       
-      // テキストを組み合わせ
-      let fullText = '';
-      if (baseText && subText) {
-        fullText = baseText.replace(/\\+$/, '') + '\\' + subText.replace(/^\\+/, '');
-      }
+      console.log('baseText:', baseText);
+      console.log('subText:', subText);
       
-      // フルテキスト出力を更新
-      const fullTextOutput = document.querySelector(`[data-text-output="${groupId}"]`);
-      if (fullTextOutput) {
-        const codeElem = fullTextOutput.querySelector('code') || fullTextOutput;
-        codeElem.textContent = fullText;
+      // フルパスを作成
+      const fullText = baseText.replace(/\\+$/, '') + '\\' + subText.replace(/^\\+/, '');
+      
+      console.log('fullText:', fullText);
+      
+      // mkdirコマンド出力を更新
+      const mkdirOutput = document.querySelector(`[data-mkdir-output="${groupId}"]`);
+      console.log('mkdirOutput:', mkdirOutput);
+      
+      if (mkdirOutput) {
+        const codeElem = mkdirOutput.querySelector('code') || mkdirOutput;
+        codeElem.textContent = `mkdir "${fullText}"`;
+        console.log('mkdir更新:', codeElem.textContent);
       }
       
       // cdコマンド出力を更新
       const cdOutput = document.querySelector(`[data-cd-output="${groupId}"]`);
+      console.log('cdOutput:', cdOutput);
+      
       if (cdOutput) {
         const codeElem = cdOutput.querySelector('code') || cdOutput;
         codeElem.textContent = `cd "${fullText}"`;
-      }
-      
-      // mkdirコマンド出力を更新
-      const mkdirOutput = document.querySelector(`[data-mkdir-output="${groupId}"]`);
-      if (mkdirOutput) {
-        const codeElem = mkdirOutput.querySelector('code') || mkdirOutput;
-        codeElem.textContent = `mkdir "${fullText}"`;
-      }
-      
-      // CloudFormation create-stack コマンド
-      const cfnCreateOutput = document.querySelector(`[data-cfn-create-output]`);
-      if (cfnCreateOutput && groupId === 'cfn-create') {
-        const stackName = baseText;
-        const templateFile = subText;
-        const codeElem = cfnCreateOutput.querySelector('code') || cfnCreateOutput;
-        codeElem.textContent = `aws cloudformation create-stack --stack-name ${stackName} --template-body file://${templateFile} --region ${region} --capabilities CAPABILITY_IAM`;
-      }
-      
-      // CloudFormation describe-stacks コマンド
-      const cfnDescribeOutput = document.querySelector(`[data-cfn-describe-output]`);
-      if (cfnDescribeOutput && groupId === 'cfn-create') {
-        const stackName = baseText;
-        const codeElem = cfnDescribeOutput.querySelector('code') || cfnDescribeOutput;
-        codeElem.textContent = `aws cloudformation describe-stacks --stack-name ${stackName} --query "Stacks[0].StackStatus"`;
-      }
-      
-      // CloudFormation delete-stack コマンド
-      const cfnDeleteOutput = document.querySelector(`[data-cfn-delete-output]`);
-      if (cfnDeleteOutput && groupId === 'cfn-create') {
-        const stackName = baseText;
-        const codeElem = cfnDeleteOutput.querySelector('code') || cfnDeleteOutput;
-        codeElem.textContent = `aws cloudformation delete-stack --stack-name ${stackName} --region ${region}`;
+        console.log('cd更新:', codeElem.textContent);
       }
     }
     
-    // 入力時に更新
-    if (baseInput) baseInput.addEventListener('input', updateTexts);
-    if (subInput) subInput.addEventListener('input', updateTexts);
-    if (regionInput) regionInput.addEventListener('input', updateTexts);
+    baseInput.addEventListener('input', updateTexts);
+    subInput.addEventListener('input', updateTexts);
     
-    // 初期表示
     updateTexts();
   });
+  
+  console.log('=== initTextBuilder 完了 ===');
 }
+
+// 初期化
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOMContentLoaded');
+  initTextBuilder();
+});
 
 // ========================================
 // テンプレート置換機能
@@ -693,7 +710,7 @@ function initTemplateGenerator() {
 // ページ読み込み時に初期化
 document.addEventListener('DOMContentLoaded', function() {
   // テキスト組み立て機能を初期化
-  initTextBuilder();
+  // initTextBuilder();
   // テンプレート生成機能を初期化
   initTemplateGenerator();
 });

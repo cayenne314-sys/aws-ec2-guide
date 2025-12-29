@@ -69,13 +69,13 @@ nav_order: 1
 ```batch
 mkdir "C:\my-aws\aws-learning-projects\ec2-cloudformation"
 ```
-{: data-mkdir-output="ec2-text"}
+{: data-mkdir-output="ec2-text" data-template="mkdir &quot;{{FULL_PATH}}&quot;"}
 
 #### フォルダ移動コマンド
 ```batch
 cd "C:\my-aws\aws-learning-projects\ec2-cloudformation"
 ```
-{: data-cd-output="ec2-text"}
+{: data-cd-output="ec2-text" data-template="cd &quot;{{FULL_PATH}}&quot;"}
 
 > **💡 ヒント**  
 > フォルダパスは各自の環境に合わせて上記の入力欄で変更してください。コマンドが自動的に更新されます。
