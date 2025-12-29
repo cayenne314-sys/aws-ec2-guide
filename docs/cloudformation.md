@@ -218,6 +218,21 @@ aws cloudformation delete-stack --stack-name ec2-test-stack --region ap-northeas
 
 ---
 
+### 1-5. スタック作成状態の確認
+
+#### スタック状態確認コマンド
+```batch
+aws cloudformation describe-stacks --stack-name ec2-test-stack --query "Stacks[0].StackStatus"
+```
+{: data-output-group="cfn-status" data-command-type="cfn-describe"}
+
+**出力例**:
+- `"CREATE_IN_PROGRESS"` - 作成中
+- `"CREATE_COMPLETE"` - 作成完了
+- `"CREATE_FAILED"` - 作成失敗
+
+---
+
 #### EC2インスタンスIDの取得
 ```batch
 aws cloudformation describe-stacks --stack-name ec2-test-stack --query "Stacks[0].Outputs[?OutputKey=='InstanceId'].OutputValue" --output text
