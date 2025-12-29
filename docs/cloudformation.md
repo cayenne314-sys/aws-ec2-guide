@@ -54,13 +54,13 @@ nav_order: 1
 <div class="text-builder" data-group="ec2-text">
   <div class="form-group">
     <label>作業フォルダ:</label>
-    <input type="text" class="input-base-text" value="C:\my-aws">
+    <input type="text" data-var="BASE_PATH" value="C:\my-aws">
     <small>ベースとなる作業フォルダのパス</small>
   </div>
   
   <div class="form-group">
     <label>EC2構築用フォルダ:</label>
-    <input type="text" class="input-sub-text" value="aws-learning-projects\ec2-cloudformation">
+    <input type="text" data-var="SUB_PATH" value="aws-learning-projects\ec2-cloudformation">
     <small>プロジェクト用のサブフォルダ</small>
   </div>
 </div>
