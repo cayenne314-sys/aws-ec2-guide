@@ -81,7 +81,7 @@ details.toc-collapse .toc {
 // パス組み立て入力フィールド
 // ========================================
 
-.path-builder {
+.text-builder {
   margin: 20px 0;
   padding: 15px;
   background: #f6f8fa;
@@ -89,15 +89,15 @@ details.toc-collapse .toc {
   border-left: 4px solid #0366d6;
 }
 
-.path-builder .form-group {
+.text-builder .form-group {
   margin-bottom: 12px;
 }
 
-.path-builder .form-group:last-child {
+.text-builder .form-group:last-child {
   margin-bottom: 0;
 }
 
-.path-builder label {
+.text-builder label {
   display: block;
   font-weight: 600;
   margin-bottom: 6px;
@@ -105,7 +105,7 @@ details.toc-collapse .toc {
   font-size: 14px;
 }
 
-.path-builder input[type="text"] {
+.text-builder input[type="text"] {
   width: 100%;
   padding: 8px 12px;
   border: 1px solid #d1d5da;
@@ -116,13 +116,13 @@ details.toc-collapse .toc {
   box-sizing: border-box;
 }
 
-.path-builder input[type="text"]:focus {
+.text-builder input[type="text"]:focus {
   outline: none;
   border-color: #0366d6;
   box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.1);
 }
 
-.path-builder small {
+.text-builder small {
   display: block;
   color: #586069;
   font-size: 12px;

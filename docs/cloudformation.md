@@ -51,16 +51,16 @@ nav_order: 1
 
 作業フォルダとプロジェクトフォルダを入力してください。自動的にフルパスとコマンドが生成されます。
 
-<div class="path-builder" data-group="ec2-path">
+<div class="text-builder" data-group="ec2-text">
   <div class="form-group">
     <label>作業フォルダ:</label>
-    <input type="text" class="input-base-path" value="C:\my-aws">
+    <input type="text" class="input-base-text" value="C:\my-aws">
     <small>ベースとなる作業フォルダのパス</small>
   </div>
   
   <div class="form-group">
     <label>EC2構築用フォルダ:</label>
-    <input type="text" class="input-sub-path" value="aws-learning-projects\ec2-cloudformation">
+    <input type="text" class="input-sub-text" value="aws-learning-projects\ec2-cloudformation">
     <small>プロジェクト用のサブフォルダ</small>
   </div>
 </div>
@@ -69,13 +69,13 @@ nav_order: 1
 ```batch
 mkdir "C:\my-aws\aws-learning-projects\ec2-cloudformation"
 ```
-{: data-mkdir-output="ec2-path"}
+{: data-mkdir-output="ec2-text"}
 
 #### フォルダ移動コマンド
 ```batch
 cd "C:\my-aws\aws-learning-projects\ec2-cloudformation"
 ```
-{: data-cd-output="ec2-path"}
+{: data-cd-output="ec2-text"}
 
 > **💡 ヒント**  
 > フォルダパスは各自の環境に合わせて上記の入力欄で変更してください。コマンドが自動的に更新されます。
@@ -173,16 +173,16 @@ Description: 'EC2 Instance with Amazon Linux 2023'
 
 以下のパラメータを入力してください。自動的にコマンドが生成されます。
 
-<div class="path-builder" data-group="cfn-create">
+<div class="text-builder" data-group="cfn-create">
   <div class="form-group">
     <label>スタック名:</label>
-    <input type="text" class="input-base-path" value="ec2-test-stack">
+    <input type="text" class="input-base-text" value="ec2-test-stack">
     <small>CloudFormationスタックの名前</small>
   </div>
   
   <div class="form-group">
     <label>テンプレートファイル名:</label>
-    <input type="text" class="input-sub-path" value="template.yaml">
+    <input type="text" class="input-sub-text" value="template.yaml">
     <small>作成したテンプレートファイル名</small>
   </div>
   
