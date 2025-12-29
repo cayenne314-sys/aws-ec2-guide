@@ -422,10 +422,14 @@
 // ========================================
 
 const COMMAND_TEMPLATES = {
+  // パス系コマンド
   'mkdir': 'mkdir "{{FULL_PATH}}"',
   'cd': 'cd "{{FULL_PATH}}"',
-  'rmdir': 'rmdir /s /q "{{FULL_PATH}}"',
-  // 新しいコマンドを追加したい場合はここに追加
+  
+  // CloudFormation系コマンド
+  'cfn-create': 'aws cloudformation create-stack --stack-name {{STACK_NAME}} --template-body file://{{TEMPLATE_FILE}} --region {{REGION}} --capabilities CAPABILITY_IAM',
+  'cfn-describe': 'aws cloudformation describe-stacks --stack-name {{STACK_NAME}} --query "Stacks[0].StackStatus"',
+  'cfn-delete': 'aws cloudformation delete-stack --stack-name {{STACK_NAME}} --region {{REGION}}',
 };
 
 // ========================================
@@ -447,27 +451,57 @@ function replaceTemplate(template, values) {
 
 function initTextBuilder() {
   document.querySelectorAll('.text-builder').forEach(container => {
-    const baseInput = container.querySelector('.input-base-text');
-    const subInput = container.querySelector('.input-sub-text');
-    
-    if (!baseInput || !subInput) return;
-    
     const groupId = container.dataset.group;
     if (!groupId) return;
     
+    // data-var属性を持つすべての入力フィールドを取得
+    const inputs = container.querySelectorAll('input[data-var]');
+    
+    // data-var属性がない場合は旧方式（BASE_PATH, SUB_PATH）
+    const useOldStyle = inputs.length === 0;
+    
+    let baseInput, subInput, regionInput;
+    
+    if (useOldStyle) {
+      // 旧方式：クラス名で取得
+      baseInput = container.querySelector('.input-base-text');
+      subInput = container.querySelector('.input-sub-text');
+      regionInput = container.querySelector('.input-region');
+      
+      if (!baseInput || !subInput) return;
+    }
+    
     function updateTexts() {
-      const baseText = baseInput.value.trim();
-      const subText = subInput.value.trim();
+      const values = {};
       
-      // フルパスを作成
-      const fullText = baseText.replace(/\\+$/, '') + '\\' + subText.replace(/^\\+/, '');
-      
-      // 値のマップ
-      const values = {
-        BASE_PATH: baseText,
-        SUB_PATH: subText,
-        FULL_PATH: fullText
-      };
+      if (useOldStyle) {
+        // 旧方式：固定の変数名
+        values.BASE_PATH = baseInput.value.trim();
+        values.SUB_PATH = subInput.value.trim();
+        
+        // FULL_PATHを生成
+        const basePath = values.BASE_PATH.replace(/\\+$/, '');
+        const subPath = values.SUB_PATH.replace(/^\\+/, '');
+        values.FULL_PATH = basePath + '\\' + subPath;
+        
+        // リージョンがあれば追加
+        if (regionInput) {
+          values.REGION = regionInput.value.trim();
+        }
+      } else {
+        // 新方式：data-var属性から取得
+        inputs.forEach(input => {
+          const varName = input.dataset.var;
+          values[varName] = input.value.trim();
+        });
+        
+        // FULL_PATHが必要な場合は生成
+        if (values.BASE_PATH && values.SUB_PATH) {
+          const basePath = values.BASE_PATH.replace(/\\+$/, '');
+          const subPath = values.SUB_PATH.replace(/^\\+/, '');
+          values.FULL_PATH = basePath + '\\' + subPath;
+        }
+      }
       
       // グループIDに紐づくすべての出力を更新
       const outputs = document.querySelectorAll(`[data-output-group="${groupId}"]`);
@@ -486,8 +520,16 @@ function initTextBuilder() {
       });
     }
     
-    baseInput.addEventListener('input', updateTexts);
-    subInput.addEventListener('input', updateTexts);
+    // イベントリスナーを追加
+    if (useOldStyle) {
+      baseInput.addEventListener('input', updateTexts);
+      subInput.addEventListener('input', updateTexts);
+      if (regionInput) regionInput.addEventListener('input', updateTexts);
+    } else {
+      inputs.forEach(input => {
+        input.addEventListener('input', updateTexts);
+      });
+    }
     
     updateTexts();
   });

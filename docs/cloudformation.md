@@ -176,30 +176,43 @@ Description: 'EC2 Instance with Amazon Linux 2023'
 <div class="text-builder" data-group="cfn-create">
   <div class="form-group">
     <label>スタック名:</label>
-    <input type="text" class="input-base-text" value="ec2-test-stack">
+    <input type="text" data-var="STACK_NAME" value="ec2-test-stack">
     <small>CloudFormationスタックの名前</small>
   </div>
   
   <div class="form-group">
     <label>テンプレートファイル名:</label>
-    <input type="text" class="input-sub-text" value="template.yaml">
+    <input type="text" data-var="TEMPLATE_FILE" value="template.yaml">
     <small>作成したテンプレートファイル名</small>
   </div>
   
   <div class="form-group">
     <label>リージョン:</label>
-    <input type="text" class="input-region" value="ap-northeast-1">
+    <input type="text" data-var="REGION" value="ap-northeast-1">
     <small>東京リージョン: ap-northeast-1</small>
   </div>
 </div>
 
-#### 生成されたコマンド
+#### スタック作成コマンド
+```batch
+aws cloudformation create-stack --stack-name ec2-test-stack --template-body file://template.yaml --region ap-northeast-1 --capabilities CAPABILITY_IAM
+```
+{: data-output-group="cfn-create" data-command-type="cfn-create"}
+{: .wrap-code}
 
-<div class="language-batch highlighter-rouge">
-  <div class="highlight">
-    <pre class="highlight" data-cfn-create-output><code>aws cloudformation create-stack --stack-name ec2-test-stack --template-body file://template.yaml --region ap-northeast-1 --capabilities CAPABILITY_IAM</code></pre>
-  </div>
-</div>
+#### スタック状態確認コマンド
+```batch
+aws cloudformation describe-stacks --stack-name ec2-test-stack --query "Stacks[0].StackStatus"
+```
+{: data-output-group="cfn-create" data-command-type="cfn-describe"}
+{: .wrap-code}
+
+#### スタック削除コマンド
+```batch
+aws cloudformation delete-stack --stack-name ec2-test-stack --region ap-northeast-1
+```
+{: data-output-group="cfn-create" data-command-type="cfn-delete"}
+{: .wrap-code}
 
 **パラメータ説明**:
 - `--stack-name`: スタック名
