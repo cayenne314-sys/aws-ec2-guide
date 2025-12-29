@@ -49,7 +49,7 @@ nav_order: 1
 
 ### 1-2. EC2構築用フォルダに移動
 
-作業フォルダとプロジェクトフォルダを入力してください。自動的にフルパスとコマンドが生成されます。
+作業フォルダとプロジェクトフォルダを入力してください。
 
 <div class="text-builder" data-group="ec2-text">
   <div class="form-group">
@@ -84,14 +84,22 @@ cd "C:\my-aws\aws-learning-projects\ec2-cloudformation"
 
 ### 1-3. CloudFormationテンプレートファイルを作成
 
-#### パラメータ設定
+以下のパラメータを入力してください。自動的にテンプレートとコマンドが生成されます。
 
-以下の値を入力すると、自動的にテンプレートファイルが生成されます。
-
-<div class="template-generator" data-template="cloudformation-yaml" data-group="cfn-template">
-  <h4>⚙️ テンプレート設定</h4>
-  
+<div class="text-builder" data-group="cfn-template">
   <div class="template-form">
+    <div class="form-group">
+      <label>テンプレートファイル名:</label>
+      <input type="text" data-var="TEMPLATE_FILE" value="template.yaml">
+      <small>作成するテンプレートファイル名</small>
+    </div>
+    
+    <div class="form-group">
+      <label>リージョン:</label>
+      <input type="text" data-var="REGION" value="ap-northeast-1">
+      <small>東京リージョン: ap-northeast-1</small>
+    </div>
+    
     <div class="form-group">
       <label>キーペア名:</label>
       <input type="text" data-var="KEY_NAME" value="my-ec2-test-key">
@@ -113,13 +121,13 @@ cd "C:\my-aws\aws-learning-projects\ec2-cloudformation"
     <div class="form-group">
       <label>SSH接続元IP:</label>
       <input type="text" data-var="SSH_IP" value="133.201.31.192/32">
-      <small>ポート22の許可IP（/32必須）</small>
+      <small>ポート22の許可IP</small>
     </div>
     
     <div class="form-group">
       <label>HTTP接続元IP:</label>
       <input type="text" data-var="HTTP_IP" value="133.201.31.192/32">
-      <small>ポート80の許可IP（/32必須）</small>
+      <small>ポート80の許可IP</small>
     </div>
     
     <div class="form-group">
@@ -142,22 +150,15 @@ cd "C:\my-aws\aws-learning-projects\ec2-cloudformation"
   </div>
 </div>
 
-#### テンプレートファイルを作成
-
-VSCodeで以下のコマンドを実行してファイルを開きます：
-```batch
-code ./template.yaml
-```
-
-以下の内容をコピー＆ペーストしてください：
+#### 生成されたテンプレート
 
 <details markdown="1" open>
-<summary>📄 template.yaml（生成されたテンプレート）</summary>
+<summary>📄 template.yaml</summary>
 ```yaml
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'EC2 Instance with Amazon Linux 2023'
+...
 ```
-{: data-template-output="cfn-template"}
+{: data-output-group="cfn-template" data-command-type="cloudformation-yaml"}
 
 </details>
 
@@ -171,25 +172,13 @@ Description: 'EC2 Instance with Amazon Linux 2023'
 
 ### 1-4. CloudFormationでスタック作成
 
-以下のパラメータを入力してください。自動的にコマンドが生成されます。
+スタック名を入力してください。テンプレートファイル名とリージョンは1-3で設定した値が使用されます。
 
 <div class="text-builder" data-group="cfn-create">
   <div class="form-group">
     <label>スタック名:</label>
     <input type="text" data-var="STACK_NAME" value="ec2-test-stack">
     <small>CloudFormationスタックの名前</small>
-  </div>
-  
-  <div class="form-group">
-    <label>テンプレートファイル名:</label>
-    <input type="text" data-var="TEMPLATE_FILE" value="template.yaml">
-    <small>作成したテンプレートファイル名</small>
-  </div>
-  
-  <div class="form-group">
-    <label>リージョン:</label>
-    <input type="text" data-var="REGION" value="ap-northeast-1">
-    <small>東京リージョン: ap-northeast-1</small>
   </div>
 </div>
 
@@ -200,19 +189,11 @@ aws cloudformation create-stack --stack-name ec2-test-stack --template-body file
 {: data-output-group="cfn-create" data-command-type="cfn-create"}
 {: .wrap-code}
 
-#### スタック状態確認コマンド
-```batch
-aws cloudformation describe-stacks --stack-name ec2-test-stack --query "Stacks[0].StackStatus"
-```
-{: data-output-group="cfn-create" data-command-type="cfn-describe"}
-{: .wrap-code}
-
-#### スタック削除コマンド
+<!-- #### スタック削除コマンド
 ```batch
 aws cloudformation delete-stack --stack-name ec2-test-stack --region ap-northeast-1
 ```
-{: data-output-group="cfn-create" data-command-type="cfn-delete"}
-{: .wrap-code}
+{: data-output-group="cfn-create" data-command-type="cfn-delete"} -->
 
 **パラメータ説明**:
 - `--stack-name`: スタック名
@@ -229,41 +210,32 @@ aws cloudformation delete-stack --stack-name ec2-test-stack --region ap-northeas
 
 ---
 
-### 1-5. スタック作成状態の確認
-
-<div class="command-generator">
-  <h4>📊 スタック状態確認コマンド</h4>
-  
-  <div class="command-output">
-    <p>上記で入力したスタック名を使用します。</p>
-    <pre id="cfn-describe-command"></pre>
-    <button class="btn btn-primary" onclick="copyDescribeStackCommand()">📋 コマンドをコピー</button>
-    <span id="cfn-describe-success" class="copy-success"></span>
-  </div>
-</div>
-
-#### スタック状態確認
-```batch
-aws cloudformation describe-stacks --stack-name ec2-test-stack --query "Stacks[0].StackStatus"
-```
-
-**出力例**:
-- `"CREATE_IN_PROGRESS"` - 作成中
 - `"CREATE_COMPLETE"` - 作成完了
 - `"CREATE_FAILED"` - 作成失敗
+
+---
 
 #### EC2インスタンスIDの取得
 ```batch
 aws cloudformation describe-stacks --stack-name ec2-test-stack --query "Stacks[0].Outputs[?OutputKey=='InstanceId'].OutputValue" --output text
 ```
+{: data-output-group="cfn-status" data-command-type="cfn-get-instance-id"}
 {: .wrap-code}
 
 **出力例**:
 ```
-i-0eb82246240955484
+i-xxxxxxxxxxxxxxxxx
 ```
 
-このインスタンスIDを控えておいてください（後の手順で使用）。
+取得したインスタンスIDを以下に入力してください（後の手順で使用）。
+
+<div class="text-builder" data-group="ec2-instance">
+  <div class="form-group">
+    <label>EC2インスタンスID:</label>
+    <input type="text" data-var="INSTANCE_ID" value="i-xxxxxxxxxxxxxxxxx" placeholder="i-xxxxxxxxxxxxxxxxx">
+    <small>CloudFormationで作成されたインスタンスID</small>
+  </div>
+</div>
 
 ---
 
@@ -271,21 +243,31 @@ i-0eb82246240955484
 
 #### インスタンスの状態確認
 ```batch
-aws ec2 describe-instances --instance-ids i-0eb82246240955484 --query "Reservations[0].Instances[0].State.Name"
+aws ec2 describe-instances --instance-ids i-xxxxxxxxxxxxxxxxx --query "Reservations[0].Instances[0].State.Name"
 ```
+{: data-output-group="ec2-instance" data-command-type="ec2-describe-state"}
+{: .wrap-code}
 
 **出力例**:
 - `"pending"` - 起動中
 - `"running"` - 実行中
 
+---
+
 #### インスタンスのステータスチェック
 ```batch
-aws ec2 describe-instance-status --instance-ids i-0eb82246240955484 --query "InstanceStatuses[0].InstanceStatus.Status"
+aws ec2 describe-instance-status --instance-ids i-xxxxxxxxxxxxxxxxx --query "InstanceStatuses[0].InstanceStatus.Status"
 ```
+{: data-output-group="ec2-instance" data-command-type="ec2-describe-status"}
+{: .wrap-code}
 
 **出力例**:
 - `"initializing"` - 初期化中
 - `"ok"` - 正常
+
+> **💡 ヒント**  
+> ステータスが `"ok"` になるまで数分かかる場合があります。上記のコマンドを定期的に実行して確認してください。
+```
 
 ---
 

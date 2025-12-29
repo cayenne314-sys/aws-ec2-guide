@@ -418,108 +418,26 @@
 // });
 
 // ========================================
-// コマンドテンプレート定義
+// 統一テンプレート定義（コマンドもYAMLも同じ場所）
 // ========================================
 
 const COMMAND_TEMPLATES = {
   // パス系コマンド
   'mkdir': 'mkdir "{{FULL_PATH}}"',
   'cd': 'cd "{{FULL_PATH}}"',
-  'rmdir': 'rmdir /s /q "{{FULL_PATH}}"',
   
   // CloudFormation系コマンド
   'cfn-create': 'aws cloudformation create-stack --stack-name {{STACK_NAME}} --template-body file://{{TEMPLATE_FILE}} --region {{REGION}} --capabilities CAPABILITY_IAM',
   'cfn-describe': 'aws cloudformation describe-stacks --stack-name {{STACK_NAME}} --query "Stacks[0].StackStatus"',
   'cfn-delete': 'aws cloudformation delete-stack --stack-name {{STACK_NAME}} --region {{REGION}}',
-};
-
-// ========================================
-// テンプレート置換関数
-// ========================================
-
-function replaceTemplate(template, values) {
-  let result = template;
-  for (const [key, value] of Object.entries(values)) {
-    const regex = new RegExp(`{{${key}}}`, 'g');
-    result = result.replace(regex, value);
-  }
-  return result;
-}
-
-// ========================================
-// テキスト組み立て機能（統一版）
-// ========================================
-
-function initTextBuilder() {
-  document.querySelectorAll('.text-builder').forEach(container => {
-    const groupId = container.dataset.group;
-    if (!groupId) return;
-    
-    // data-var属性を持つすべての入力フィールドを取得
-    const inputs = container.querySelectorAll('input[data-var]');
-    if (inputs.length === 0) return;
-    
-    function updateTexts() {
-      const values = {};
-      
-      // すべての入力値を収集
-      inputs.forEach(input => {
-        const varName = input.dataset.var;
-        values[varName] = input.value.trim();
-      });
-      
-      // BASE_PATHとSUB_PATHが存在する場合、FULL_PATHを生成
-      if (values.BASE_PATH && values.SUB_PATH) {
-        const basePath = values.BASE_PATH.replace(/\\+$/, '');
-        const subPath = values.SUB_PATH.replace(/^\\+/, '');
-        values.FULL_PATH = basePath + '\\' + subPath;
-      }
-      
-      // グループIDに紐づくすべての出力を更新
-      const outputs = document.querySelectorAll(`[data-output-group="${groupId}"]`);
-      
-      outputs.forEach(output => {
-        const commandType = output.dataset.commandType;
-        
-        if (commandType && COMMAND_TEMPLATES[commandType]) {
-          // テンプレートからコマンドを生成
-          const template = COMMAND_TEMPLATES[commandType];
-          const command = replaceTemplate(template, values);
-          
-          const codeElem = output.querySelector('code') || output;
-          codeElem.textContent = command;
-        }
-      });
-    }
-    
-    // すべての入力フィールドにイベントリスナーを追加
-    inputs.forEach(input => {
-      input.addEventListener('input', updateTexts);
-    });
-    
-    // 初期表示
-    updateTexts();
-  });
-}
-
-// ========================================
-// 初期化
-// ========================================
-
-document.addEventListener('DOMContentLoaded', function() {
-  initTextBuilder();
-});
-
-// ========================================
-// テンプレート置換機能
-// ========================================
-
-/**
- * テンプレート定義（拡張しやすいように外部化）
- */
-const TEMPLATES = {
-  'cloudformation-yaml': 
-`AWSTemplateFormatVersion: '2010-09-09'
+  'cfn-get-instance-id': 'aws cloudformation describe-stacks --stack-name {{STACK_NAME}} --query "Stacks[0].Outputs[?OutputKey==\'InstanceId\'].OutputValue" --output text',
+  
+  // EC2系コマンド
+  'ec2-describe-state': 'aws ec2 describe-instances --instance-ids {{INSTANCE_ID}} --query "Reservations[0].Instances[0].State.Name"',
+  'ec2-describe-status': 'aws ec2 describe-instance-status --instance-ids {{INSTANCE_ID}} --query "InstanceStatuses[0].InstanceStatus.Status"',
+  
+    // テンプレートファイル（長いYAMLも同じ）
+  'cloudformation-yaml': `AWSTemplateFormatVersion: '2010-09-09'
 Description: 'EC2 Instance with Amazon Linux 2023'
 
 Parameters:
@@ -628,76 +546,76 @@ Outputs:
   
   AmiId:
     Description: AMI ID used for this instance
-    Value: !Ref LatestAmiId`
+    Value: !Ref LatestAmiId`,
+
+  // 他のテンプレートを追加したい場合はここに追加
 };
 
-/**
- * テンプレート置換処理
- * @param {string} template - テンプレート文字列
- * @param {Object} values - 置換する値のオブジェクト
- * @returns {string} 置換後の文字列
- */
-function renderTemplate(template, values) {
+// ========================================
+// テンプレート置換関数
+// ========================================
+
+function replaceTemplate(template, values) {
   let result = template;
-  
-  // プレースホルダーを置換
   for (const [key, value] of Object.entries(values)) {
-    const placeholder = new RegExp(`{{${key}}}`, 'g');
-    result = result.replace(placeholder, value);
+    const regex = new RegExp(`{{${key}}}`, 'g');
+    result = result.replace(regex, value);
   }
-  
   return result;
 }
 
-/**
- * テンプレート生成機能を初期化
- */
-function initTemplateGenerator() {
-  // .template-generator クラスを持つコンテナを処理
-  document.querySelectorAll('.template-generator').forEach(container => {
-    const templateName = container.dataset.template;
-    const groupId = container.dataset.group;
+// ========================================
+// 統一テキスト組み立て機能
+// ========================================
+
+function initTextBuilder() {
+  // ページ全体から data-var を持つすべての入力フィールドを取得
+  const allInputs = document.querySelectorAll('input[data-var]');
+  
+  // グローバル更新関数
+  function updateAllOutputs() {
+    // ページ全体から値を収集
+    const globalValues = {};
     
-    if (!templateName || !groupId || !TEMPLATES[templateName]) {
-      console.error('Invalid template configuration:', templateName, groupId);
-      return;
-    }
-    
-    // すべての入力フィールドを取得
-    const inputs = container.querySelectorAll('input[data-var]');
-    
-    // 更新関数
-    function updateTemplate() {
-      // 入力値を収集
-      const values = {};
-      inputs.forEach(input => {
-        const varName = input.dataset.var;
-        values[varName] = input.value.trim();
-      });
-      
-      // テンプレートをレンダリング
-      const rendered = renderTemplate(TEMPLATES[templateName], values);
-      
-      // 出力先のコードブロックを更新
-      const outputs = document.querySelectorAll(`[data-template-output="${groupId}"]`);
-      outputs.forEach(output => {
-        const codeElem = output.querySelector('code') || output;
-        codeElem.textContent = rendered;
-      });
-    }
-    
-    // 各入力フィールドにイベントリスナーを追加
-    inputs.forEach(input => {
-      input.addEventListener('input', updateTemplate);
+    allInputs.forEach(input => {
+      const varName = input.dataset.var;
+      globalValues[varName] = input.value.trim();
     });
     
-    // 初期表示
-    updateTemplate();
+    // BASE_PATHとSUB_PATHが存在する場合、FULL_PATHを生成
+    if (globalValues.BASE_PATH && globalValues.SUB_PATH) {
+      const basePath = globalValues.BASE_PATH.replace(/\\+$/, '');
+      const subPath = globalValues.SUB_PATH.replace(/^\\+/, '');
+      globalValues.FULL_PATH = basePath + '\\' + subPath;
+    }
+    
+    // すべての出力を更新
+    document.querySelectorAll('[data-output-group]').forEach(output => {
+      const commandType = output.dataset.commandType;
+      
+      if (commandType && COMMAND_TEMPLATES[commandType]) {
+        const template = COMMAND_TEMPLATES[commandType];
+        const command = replaceTemplate(template, globalValues);
+        
+        const codeElem = output.querySelector('code') || output;
+        codeElem.textContent = command;
+      }
+    });
+  }
+  
+  // すべての入力フィールドにイベントリスナーを追加
+  allInputs.forEach(input => {
+    input.addEventListener('input', updateAllOutputs);
   });
+  
+  // 初期表示
+  updateAllOutputs();
 }
 
-// ページ読み込み時に初期化
+// ========================================
+// 初期化
+// ========================================
+
 document.addEventListener('DOMContentLoaded', function() {
-  // テンプレート生成機能を初期化
-  initTemplateGenerator();
+  initTextBuilder();
 });
