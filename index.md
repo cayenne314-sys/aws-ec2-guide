@@ -36,9 +36,6 @@ permalink: /
 ### 構築方法
 - [VSCodeでCloudFormationテンプレートを使った構築](docs/cloudformation.md)
 
-### ツール
-- [CloudFormationコマンド生成ツール](tools/command-generator.html)
-
 ---
 
 ## このガイドについて
