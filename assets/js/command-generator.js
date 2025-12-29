@@ -427,13 +427,11 @@ const COMMAND_TEMPLATES = {
   'rmdir': 'rmdir /s /q "{{FULL_PATH}}"',
   // 新しいコマンドを追加したい場合はここに追加
 };
+
 // ========================================
-// 汎用テキスト組み立て機能
+// テンプレート置換関数
 // ========================================
 
-/**
- * テンプレート文字列のプレースホルダーを置換
- */
 function replaceTemplate(template, values) {
   let result = template;
   for (const [key, value] of Object.entries(values)) {
@@ -444,66 +442,48 @@ function replaceTemplate(template, values) {
 }
 
 // ========================================
-// テキスト組み立て機能（修正版）
+// テキスト組み立て機能（汎用版）
 // ========================================
 
-/**
- * テキスト組み立て機能を初期化
- */
 function initTextBuilder() {
-  console.log('=== initTextBuilder 開始 ===');
-  
   document.querySelectorAll('.text-builder').forEach(container => {
     const baseInput = container.querySelector('.input-base-text');
     const subInput = container.querySelector('.input-sub-text');
     
-    console.log('baseInput:', baseInput);
-    console.log('subInput:', subInput);
-    
-    if (!baseInput || !subInput) {
-      console.error('入力フィールドが見つかりません');
-      return;
-    }
+    if (!baseInput || !subInput) return;
     
     const groupId = container.dataset.group;
-    console.log('groupId:', groupId);
-    
-    if (!groupId) {
-      console.error('data-group属性がありません');
-      return;
-    }
+    if (!groupId) return;
     
     function updateTexts() {
       const baseText = baseInput.value.trim();
       const subText = subInput.value.trim();
       
-      console.log('baseText:', baseText);
-      console.log('subText:', subText);
-      
       // フルパスを作成
       const fullText = baseText.replace(/\\+$/, '') + '\\' + subText.replace(/^\\+/, '');
       
-      console.log('fullText:', fullText);
+      // 値のマップ
+      const values = {
+        BASE_PATH: baseText,
+        SUB_PATH: subText,
+        FULL_PATH: fullText
+      };
       
-      // mkdirコマンド出力を更新
-      const mkdirOutput = document.querySelector(`[data-mkdir-output="${groupId}"]`);
-      console.log('mkdirOutput:', mkdirOutput);
+      // グループIDに紐づくすべての出力を更新
+      const outputs = document.querySelectorAll(`[data-output-group="${groupId}"]`);
       
-      if (mkdirOutput) {
-        const codeElem = mkdirOutput.querySelector('code') || mkdirOutput;
-        codeElem.textContent = `mkdir "${fullText}"`;
-        console.log('mkdir更新:', codeElem.textContent);
-      }
-      
-      // cdコマンド出力を更新
-      const cdOutput = document.querySelector(`[data-cd-output="${groupId}"]`);
-      console.log('cdOutput:', cdOutput);
-      
-      if (cdOutput) {
-        const codeElem = cdOutput.querySelector('code') || cdOutput;
-        codeElem.textContent = `cd "${fullText}"`;
-        console.log('cd更新:', codeElem.textContent);
-      }
+      outputs.forEach(output => {
+        const commandType = output.dataset.commandType;
+        
+        if (commandType && COMMAND_TEMPLATES[commandType]) {
+          // テンプレートからコマンドを生成
+          const template = COMMAND_TEMPLATES[commandType];
+          const command = replaceTemplate(template, values);
+          
+          const codeElem = output.querySelector('code') || output;
+          codeElem.textContent = command;
+        }
+      });
     }
     
     baseInput.addEventListener('input', updateTexts);
@@ -511,13 +491,9 @@ function initTextBuilder() {
     
     updateTexts();
   });
-  
-  console.log('=== initTextBuilder 完了 ===');
 }
 
-// 初期化
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('DOMContentLoaded');
   initTextBuilder();
 });
 
