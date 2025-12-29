@@ -1,16 +1,16 @@
 /**
- * AWS EC2\’zƒKƒCƒh - ƒRƒ}ƒ“ƒh¶¬ƒc[ƒ‹
- * ‹¤’ÊJavaScriptŠÖ”
+ * AWS EC2æ§‹ç¯‰ã‚¬ã‚¤ãƒ‰ - ã‚³ãƒãƒ³ãƒ‰ç”Ÿæˆãƒ„ãƒ¼ãƒ«
+ * å…±é€šJavaScripté–¢æ•°
  */
 
 // ========================================
-// ”Ä—pƒ†[ƒeƒBƒŠƒeƒBŠÖ”
+// æ±ç”¨ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£é–¢æ•°
 // ========================================
 
 /**
- * ƒNƒŠƒbƒvƒ{[ƒh‚ÉƒeƒLƒXƒg‚ğƒRƒs[
- * @param {string} text - ƒRƒs[‚·‚éƒeƒLƒXƒg
- * @param {string} successElementId - ¬Œ÷ƒƒbƒZ[ƒW‚ğ•\¦‚·‚é—v‘f‚ÌID
+ * ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã«ãƒ†ã‚­ã‚¹ãƒˆã‚’ã‚³ãƒ”ãƒ¼
+ * @param {string} text - ã‚³ãƒ”ãƒ¼ã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆ
+ * @param {string} successElementId - æˆåŠŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã™ã‚‹è¦ç´ ã®ID
  */
 async function copyToClipboard(text, successElementId) {
   try {
@@ -18,7 +18,7 @@ async function copyToClipboard(text, successElementId) {
     if (successElementId) {
       const elem = document.getElementById(successElementId);
       if (elem) {
-        elem.textContent = '? ƒRƒs[‚µ‚Ü‚µ‚½I';
+        elem.textContent = '? ã‚³ãƒ”ãƒ¼ã—ã¾ã—ãŸï¼';
         elem.style.display = 'inline';
         setTimeout(() => {
           elem.textContent = '';
@@ -28,16 +28,16 @@ async function copyToClipboard(text, successElementId) {
     }
     return true;
   } catch (err) {
-    console.error('ƒRƒs[¸”s:', err);
-    alert('ƒRƒs[‚É¸”s‚µ‚Ü‚µ‚½Bè“®‚ÅƒRƒs[‚µ‚Ä‚­‚¾‚³‚¢B');
+    console.error('ã‚³ãƒ”ãƒ¼å¤±æ•—:', err);
+    alert('ã‚³ãƒ”ãƒ¼ã«å¤±æ•—ã—ã¾ã—ãŸã€‚æ‰‹å‹•ã§ã‚³ãƒ”ãƒ¼ã—ã¦ãã ã•ã„ã€‚');
     return false;
   }
 }
 
 /**
- * —v‘f‚©‚ç’l‚ğæ“¾
- * @param {string} elementId - —v‘f‚ÌID
- * @returns {string} —v‘f‚Ì’l
+ * è¦ç´ ã‹ã‚‰å€¤ã‚’å–å¾—
+ * @param {string} elementId - è¦ç´ ã®ID
+ * @returns {string} è¦ç´ ã®å€¤
  */
 function getValue(elementId) {
   const elem = document.getElementById(elementId);
@@ -45,9 +45,9 @@ function getValue(elementId) {
 }
 
 /**
- * —v‘f‚ÉƒeƒLƒXƒg‚ğİ’è
- * @param {string} elementId - —v‘f‚ÌID
- * @param {string} text - İ’è‚·‚éƒeƒLƒXƒg
+ * è¦ç´ ã«ãƒ†ã‚­ã‚¹ãƒˆã‚’è¨­å®š
+ * @param {string} elementId - è¦ç´ ã®ID
+ * @param {string} text - è¨­å®šã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆ
  */
 function setText(elementId, text) {
   const elem = document.getElementById(elementId);
@@ -57,11 +57,11 @@ function setText(elementId, text) {
 }
 
 // ========================================
-// CloudFormationƒRƒ}ƒ“ƒh¶¬
+// CloudFormationã‚³ãƒãƒ³ãƒ‰ç”Ÿæˆ
 // ========================================
 
 /**
- * CloudFormationƒXƒ^ƒbƒNì¬ƒRƒ}ƒ“ƒh‚ğ¶¬EXV
+ * CloudFormationã‚¹ã‚¿ãƒƒã‚¯ä½œæˆã‚³ãƒãƒ³ãƒ‰ã‚’ç”Ÿæˆãƒ»æ›´æ–°
  */
 function updateCreateStackCommand() {
   const stackName = getValue('cfn-stack-name') || 'ec2-test-stack';
@@ -78,7 +78,7 @@ function updateCreateStackCommand() {
 }
 
 /**
- * CloudFormationƒXƒ^ƒbƒNì¬ƒRƒ}ƒ“ƒh‚ğƒRƒs[
+ * CloudFormationã‚¹ã‚¿ãƒƒã‚¯ä½œæˆã‚³ãƒãƒ³ãƒ‰ã‚’ã‚³ãƒ”ãƒ¼
  */
 async function copyCreateStackCommand() {
   const command = document.getElementById('cfn-create-command').textContent;
@@ -86,7 +86,7 @@ async function copyCreateStackCommand() {
 }
 
 /**
- * CloudFormationƒXƒ^ƒbƒNó‘ÔŠm”FƒRƒ}ƒ“ƒh‚ğ¶¬EXV
+ * CloudFormationã‚¹ã‚¿ãƒƒã‚¯çŠ¶æ…‹ç¢ºèªã‚³ãƒãƒ³ãƒ‰ã‚’ç”Ÿæˆãƒ»æ›´æ–°
  */
 function updateDescribeStackCommand() {
   const stackName = getValue('cfn-stack-name') || 'ec2-test-stack';
@@ -99,7 +99,7 @@ function updateDescribeStackCommand() {
 }
 
 /**
- * CloudFormationƒXƒ^ƒbƒNó‘ÔŠm”FƒRƒ}ƒ“ƒh‚ğƒRƒs[
+ * CloudFormationã‚¹ã‚¿ãƒƒã‚¯çŠ¶æ…‹ç¢ºèªã‚³ãƒãƒ³ãƒ‰ã‚’ã‚³ãƒ”ãƒ¼
  */
 async function copyDescribeStackCommand() {
   const command = document.getElementById('cfn-describe-command').textContent;
@@ -107,7 +107,7 @@ async function copyDescribeStackCommand() {
 }
 
 /**
- * CloudFormationƒXƒ^ƒbƒNíœƒRƒ}ƒ“ƒh‚ğ¶¬EXV
+ * CloudFormationã‚¹ã‚¿ãƒƒã‚¯å‰Šé™¤ã‚³ãƒãƒ³ãƒ‰ã‚’ç”Ÿæˆãƒ»æ›´æ–°
  */
 function updateDeleteStackCommand() {
   const stackName = getValue('cfn-stack-name') || 'ec2-test-stack';
@@ -121,7 +121,7 @@ function updateDeleteStackCommand() {
 }
 
 /**
- * CloudFormationƒXƒ^ƒbƒNíœƒRƒ}ƒ“ƒh‚ğƒRƒs[
+ * CloudFormationã‚¹ã‚¿ãƒƒã‚¯å‰Šé™¤ã‚³ãƒãƒ³ãƒ‰ã‚’ã‚³ãƒ”ãƒ¼
  */
 async function copyDeleteStackCommand() {
   const command = document.getElementById('cfn-delete-command').textContent;
@@ -129,30 +129,30 @@ async function copyDeleteStackCommand() {
 }
 
 // ========================================
-// EC2ƒCƒ“ƒXƒ^ƒ“ƒX‘€ìƒRƒ}ƒ“ƒh¶¬
+// EC2ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹æ“ä½œã‚³ãƒãƒ³ãƒ‰ç”Ÿæˆ
 // ========================================
 
 /**
- * ƒCƒ“ƒXƒ^ƒ“ƒXî•ñæ“¾ƒRƒ}ƒ“ƒh‚ğ¶¬EXV
+ * ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹æƒ…å ±å–å¾—ã‚³ãƒãƒ³ãƒ‰ã‚’ç”Ÿæˆãƒ»æ›´æ–°
  */
 function updateInstanceCommands() {
   const instanceId = getValue('ec2-instance-id') || 'i-xxxxxxxxxxxxxxxxx';
   
-  // ƒpƒuƒŠƒbƒNIPæ“¾
+  // ãƒ‘ãƒ–ãƒªãƒƒã‚¯IPå–å¾—
   const ipCommand = `aws ec2 describe-instances \\
   --instance-ids ${instanceId} \\
   --query "Reservations[0].Instances[0].PublicIpAddress" \\
   --output text`;
   setText('ec2-ip-command', ipCommand);
   
-  // ƒpƒuƒŠƒbƒNDNSæ“¾
+  // ãƒ‘ãƒ–ãƒªãƒƒã‚¯DNSå–å¾—
   const dnsCommand = `aws ec2 describe-instances \\
   --instance-ids ${instanceId} \\
   --query "Reservations[0].Instances[0].PublicDnsName" \\
   --output text`;
   setText('ec2-dns-command', dnsCommand);
   
-  // ƒCƒ“ƒXƒ^ƒ“ƒXó‘ÔŠm”F
+  // ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹çŠ¶æ…‹ç¢ºèª
   const stateCommand = `aws ec2 describe-instances \\
   --instance-ids ${instanceId} \\
   --query "Reservations[0].Instances[0].State.Name"`;
@@ -160,18 +160,18 @@ function updateInstanceCommands() {
 }
 
 /**
- * SSHÚ‘±ƒRƒ}ƒ“ƒh‚ğ¶¬EXV
+ * SSHæ¥ç¶šã‚³ãƒãƒ³ãƒ‰ã‚’ç”Ÿæˆãƒ»æ›´æ–°
  */
 function updateSSHCommand() {
   const keyFile = getValue('ssh-key-file') || 'my-ec2-test-key.pem';
-  const publicIp = getValue('ssh-public-ip') || '<ƒpƒuƒŠƒbƒNIP>';
+  const publicIp = getValue('ssh-public-ip') || '<ãƒ‘ãƒ–ãƒªãƒƒã‚¯IP>';
   
   const command = `ssh -i ${keyFile} ec2-user@${publicIp}`;
   setText('ssh-command', command);
 }
 
 /**
- * SSHÚ‘±ƒRƒ}ƒ“ƒh‚ğƒRƒs[
+ * SSHæ¥ç¶šã‚³ãƒãƒ³ãƒ‰ã‚’ã‚³ãƒ”ãƒ¼
  */
 async function copySSHCommand() {
   const command = document.getElementById('ssh-command').textContent;
@@ -179,17 +179,17 @@ async function copySSHCommand() {
 }
 
 // ========================================
-// ƒZƒLƒ…ƒŠƒeƒBƒOƒ‹[ƒv‘€ìƒRƒ}ƒ“ƒh¶¬
+// ã‚»ã‚­ãƒ¥ãƒªãƒ†ã‚£ã‚°ãƒ«ãƒ¼ãƒ—æ“ä½œã‚³ãƒãƒ³ãƒ‰ç”Ÿæˆ
 // ========================================
 
 /**
- * ƒZƒLƒ…ƒŠƒeƒBƒOƒ‹[ƒvƒRƒ}ƒ“ƒh‚ğ¶¬EXV
+ * ã‚»ã‚­ãƒ¥ãƒªãƒ†ã‚£ã‚°ãƒ«ãƒ¼ãƒ—ã‚³ãƒãƒ³ãƒ‰ã‚’ç”Ÿæˆãƒ»æ›´æ–°
  */
 function updateSecurityGroupCommands() {
   const sgId = getValue('sg-id') || 'sg-xxxxxxxxxxxxxxxxx';
   const myIp = getValue('sg-my-ip') || '0.0.0.0';
   
-  // SSH‘SŠJ•úƒ‹[ƒ‹íœ
+  // SSHå…¨é–‹æ”¾ãƒ«ãƒ¼ãƒ«å‰Šé™¤
   const revokeSSH = `aws ec2 revoke-security-group-ingress \\
   --group-id ${sgId} \\
   --protocol tcp \\
@@ -197,7 +197,7 @@ function updateSecurityGroupCommands() {
   --cidr 0.0.0.0/0`;
   setText('sg-revoke-ssh', revokeSSH);
   
-  // HTTP‘SŠJ•úƒ‹[ƒ‹íœ
+  // HTTPå…¨é–‹æ”¾ãƒ«ãƒ¼ãƒ«å‰Šé™¤
   const revokeHTTP = `aws ec2 revoke-security-group-ingress \\
   --group-id ${sgId} \\
   --protocol tcp \\
@@ -205,7 +205,7 @@ function updateSecurityGroupCommands() {
   --cidr 0.0.0.0/0`;
   setText('sg-revoke-http', revokeHTTP);
   
-  // SSH—pƒ‹[ƒ‹’Ç‰Á
+  // SSHç”¨ãƒ«ãƒ¼ãƒ«è¿½åŠ 
   const authorizeSSH = `aws ec2 authorize-security-group-ingress \\
   --group-id ${sgId} \\
   --protocol tcp \\
@@ -213,7 +213,7 @@ function updateSecurityGroupCommands() {
   --cidr ${myIp}/32`;
   setText('sg-authorize-ssh', authorizeSSH);
   
-  // HTTP—pƒ‹[ƒ‹’Ç‰Á
+  // HTTPç”¨ãƒ«ãƒ¼ãƒ«è¿½åŠ 
   const authorizeHTTP = `aws ec2 authorize-security-group-ingress \\
   --group-id ${sgId} \\
   --protocol tcp \\
@@ -223,9 +223,9 @@ function updateSecurityGroupCommands() {
 }
 
 /**
- * ƒZƒLƒ…ƒŠƒeƒBƒOƒ‹[ƒvƒRƒ}ƒ“ƒh‚ğƒRƒs[
- * @param {string} commandId - ƒRƒ}ƒ“ƒh‚ª•\¦‚³‚ê‚Ä‚¢‚é—v‘f‚ÌID
- * @param {string} successId - ¬Œ÷ƒƒbƒZ[ƒW‚ğ•\¦‚·‚é—v‘f‚ÌID
+ * ã‚»ã‚­ãƒ¥ãƒªãƒ†ã‚£ã‚°ãƒ«ãƒ¼ãƒ—ã‚³ãƒãƒ³ãƒ‰ã‚’ã‚³ãƒ”ãƒ¼
+ * @param {string} commandId - ã‚³ãƒãƒ³ãƒ‰ãŒè¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹è¦ç´ ã®ID
+ * @param {string} successId - æˆåŠŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã™ã‚‹è¦ç´ ã®ID
  */
 async function copySGCommand(commandId, successId) {
   const command = document.getElementById(commandId).textContent;
@@ -233,59 +233,59 @@ async function copySGCommand(commandId, successId) {
 }
 
 // ========================================
-// ‰Šú‰»ˆ—
+// åˆæœŸåŒ–å‡¦ç†
 // ========================================
 
 /**
- * ƒy[ƒW“Ç‚İ‚İ‚Ì‰Šú‰»
+ * ãƒšãƒ¼ã‚¸èª­ã¿è¾¼ã¿æ™‚ã®åˆæœŸåŒ–
  */
 document.addEventListener('DOMContentLoaded', function() {
-  // CloudFormationƒRƒ}ƒ“ƒh‰Šú‰»
+  // CloudFormationã‚³ãƒãƒ³ãƒ‰åˆæœŸåŒ–
   if (document.getElementById('cfn-stack-name')) {
     updateCreateStackCommand();
     updateDescribeStackCommand();
     updateDeleteStackCommand();
   }
   
-  // EC2ƒRƒ}ƒ“ƒh‰Šú‰»
+  // EC2ã‚³ãƒãƒ³ãƒ‰åˆæœŸåŒ–
   if (document.getElementById('ec2-instance-id')) {
     updateInstanceCommands();
   }
   
-  // SSHƒRƒ}ƒ“ƒh‰Šú‰»
+  // SSHã‚³ãƒãƒ³ãƒ‰åˆæœŸåŒ–
   if (document.getElementById('ssh-key-file')) {
     updateSSHCommand();
   }
   
-  // ƒZƒLƒ…ƒŠƒeƒBƒOƒ‹[ƒvƒRƒ}ƒ“ƒh‰Šú‰»
+  // ã‚»ã‚­ãƒ¥ãƒªãƒ†ã‚£ã‚°ãƒ«ãƒ¼ãƒ—ã‚³ãƒãƒ³ãƒ‰åˆæœŸåŒ–
   if (document.getElementById('sg-id')) {
     updateSecurityGroupCommands();
   }
 });
 
 // // ========================================
-// // “®“IƒpƒX’uŠ·‹@”\
+// // å‹•çš„ãƒ‘ã‚¹ç½®æ›æ©Ÿèƒ½
 // // ========================================
 
 // /**
-//  * “®“IƒpƒX“ü—ÍƒtƒB[ƒ‹ƒh‚ğ‰Šú‰»
+//  * å‹•çš„ãƒ‘ã‚¹å…¥åŠ›ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’åˆæœŸåŒ–
 //  */
 // function initDynamicPaths() {
-//   // .dynamic-path ƒNƒ‰ƒX‚ğ‚Â‚·‚×‚Ä‚Ì—v‘f‚ğˆ—
+//   // .dynamic-path ã‚¯ãƒ©ã‚¹ã‚’æŒã¤ã™ã¹ã¦ã®è¦ç´ ã‚’å‡¦ç†
 //   document.querySelectorAll('.dynamic-path').forEach(container => {
 //     const input = container.querySelector('input[type="text"]');
 //     const codeBlock = container.querySelector('pre code, pre');
     
 //     if (!input || !codeBlock) return;
     
-//     // ‰Šú’l‚ğ•Û‘¶iƒeƒ“ƒvƒŒ[ƒgj
+//     // åˆæœŸå€¤ã‚’ä¿å­˜ï¼ˆãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆï¼‰
 //     const template = codeBlock.textContent;
     
-//     // ƒRƒs[ƒ{ƒ^ƒ“‚ğ’Ç‰Á
+//     // ã‚³ãƒ”ãƒ¼ãƒœã‚¿ãƒ³ã‚’è¿½åŠ 
 //     if (!container.querySelector('.copy-btn')) {
 //       const copyBtn = document.createElement('button');
 //       copyBtn.className = 'btn btn-small btn-primary copy-btn';
-//       copyBtn.textContent = '? ƒRƒs[';
+//       copyBtn.textContent = '? ã‚³ãƒ”ãƒ¼';
 //       copyBtn.style.marginTop = '8px';
       
 //       const successMsg = document.createElement('span');
@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
 //       copyBtn.addEventListener('click', async () => {
 //         await copyToClipboard(codeBlock.textContent, null);
-//         successMsg.textContent = '? ƒRƒs[‚µ‚Ü‚µ‚½I';
+//         successMsg.textContent = '? ã‚³ãƒ”ãƒ¼ã—ã¾ã—ãŸï¼';
 //         successMsg.style.display = 'inline';
 //         setTimeout(() => {
 //           successMsg.textContent = '';
@@ -308,74 +308,74 @@ document.addEventListener('DOMContentLoaded', function() {
 //       container.appendChild(btnContainer);
 //     }
     
-//     // “ü—Í‚ÉƒR[ƒhƒuƒƒbƒN‚ğXV
+//     // å…¥åŠ›æ™‚ã«ã‚³ãƒ¼ãƒ‰ãƒ–ãƒ­ãƒƒã‚¯ã‚’æ›´æ–°
 //     input.addEventListener('input', () => {
 //       codeBlock.textContent = input.value;
 //     });
     
-//     // ‰Šú•\¦‚ğXV
+//     // åˆæœŸè¡¨ç¤ºã‚’æ›´æ–°
 //     codeBlock.textContent = input.value;
 //   });
 // }
 
-// // ƒy[ƒW“Ç‚İ‚İ‚É‰Šú‰»
+// // ãƒšãƒ¼ã‚¸èª­ã¿è¾¼ã¿æ™‚ã«åˆæœŸåŒ–
 // document.addEventListener('DOMContentLoaded', function() {
-//   // “®“IƒpƒX‹@”\‚ğ‰Šú‰»
+//   // å‹•çš„ãƒ‘ã‚¹æ©Ÿèƒ½ã‚’åˆæœŸåŒ–
 //   initDynamicPaths();
 // });
 
 // ========================================
-// ƒpƒX‘g‚İ—§‚Ä‹@”\iŠg’£”Åj
+// ãƒ‘ã‚¹çµ„ã¿ç«‹ã¦æ©Ÿèƒ½ï¼ˆæ‹¡å¼µç‰ˆï¼‰
 // ========================================
 
 /**
- * ƒpƒX‘g‚İ—§‚Ä‹@”\‚ğ‰Šú‰»iƒRƒ}ƒ“ƒh¶¬‚É‚à‘Î‰j
+ * ãƒ‘ã‚¹çµ„ã¿ç«‹ã¦æ©Ÿèƒ½ã‚’åˆæœŸåŒ–ï¼ˆã‚³ãƒãƒ³ãƒ‰ç”Ÿæˆã«ã‚‚å¯¾å¿œï¼‰
  */
 function initPathBuilder() {
-  // .path-builder ƒNƒ‰ƒX‚ğ‚ÂƒRƒ“ƒeƒi‚ğˆ—
+  // .path-builder ã‚¯ãƒ©ã‚¹ã‚’æŒã¤ã‚³ãƒ³ãƒ†ãƒŠã‚’å‡¦ç†
   document.querySelectorAll('.path-builder').forEach(container => {
     const baseInput = container.querySelector('.input-base-path');
     const subInput = container.querySelector('.input-sub-path');
     const regionInput = container.querySelector('.input-region');
     
-    // ƒOƒ‹[ƒvID‚ğæ“¾
+    // ã‚°ãƒ«ãƒ¼ãƒ—IDã‚’å–å¾—
     const groupId = container.dataset.group;
     if (!groupId) return;
     
-    // XVŠÖ”
+    // æ›´æ–°é–¢æ•°
     function updatePaths() {
       const basePath = baseInput ? baseInput.value.trim() : '';
       const subPath = subInput ? subInput.value.trim() : '';
       const region = regionInput ? regionInput.value.trim() : '';
       
-      // ƒpƒX‚ğ‘g‚İ‡‚í‚¹
+      // ãƒ‘ã‚¹ã‚’çµ„ã¿åˆã‚ã›
       let fullPath = '';
       if (basePath && subPath) {
         fullPath = basePath.replace(/\\+$/, '') + '\\' + subPath.replace(/^\\+/, '');
       }
       
-      // ƒtƒ‹ƒpƒXo—Í‚ğXV
+      // ãƒ•ãƒ«ãƒ‘ã‚¹å‡ºåŠ›ã‚’æ›´æ–°
       const fullPathOutput = document.querySelector(`[data-path-output="${groupId}"]`);
       if (fullPathOutput) {
         const codeElem = fullPathOutput.querySelector('code') || fullPathOutput;
         codeElem.textContent = fullPath;
       }
       
-      // cdƒRƒ}ƒ“ƒho—Í‚ğXV
+      // cdã‚³ãƒãƒ³ãƒ‰å‡ºåŠ›ã‚’æ›´æ–°
       const cdOutput = document.querySelector(`[data-cd-output="${groupId}"]`);
       if (cdOutput) {
         const codeElem = cdOutput.querySelector('code') || cdOutput;
         codeElem.textContent = `cd "${fullPath}"`;
       }
       
-      // mkdirƒRƒ}ƒ“ƒho—Í‚ğXV
+      // mkdirã‚³ãƒãƒ³ãƒ‰å‡ºåŠ›ã‚’æ›´æ–°
       const mkdirOutput = document.querySelector(`[data-mkdir-output="${groupId}"]`);
       if (mkdirOutput) {
         const codeElem = mkdirOutput.querySelector('code') || mkdirOutput;
         codeElem.textContent = `mkdir "${fullPath}"`;
       }
       
-      // CloudFormation create-stack ƒRƒ}ƒ“ƒh
+      // CloudFormation create-stack ã‚³ãƒãƒ³ãƒ‰
       const cfnCreateOutput = document.querySelector(`[data-cfn-create-output]`);
       if (cfnCreateOutput && groupId === 'cfn-create') {
         const stackName = basePath;
@@ -384,7 +384,7 @@ function initPathBuilder() {
         codeElem.textContent = `aws cloudformation create-stack --stack-name ${stackName} --template-body file://${templateFile} --region ${region} --capabilities CAPABILITY_IAM`;
       }
       
-      // CloudFormation describe-stacks ƒRƒ}ƒ“ƒh
+      // CloudFormation describe-stacks ã‚³ãƒãƒ³ãƒ‰
       const cfnDescribeOutput = document.querySelector(`[data-cfn-describe-output]`);
       if (cfnDescribeOutput && groupId === 'cfn-create') {
         const stackName = basePath;
@@ -392,7 +392,7 @@ function initPathBuilder() {
         codeElem.textContent = `aws cloudformation describe-stacks --stack-name ${stackName} --query "Stacks[0].StackStatus"`;
       }
       
-      // CloudFormation delete-stack ƒRƒ}ƒ“ƒh
+      // CloudFormation delete-stack ã‚³ãƒãƒ³ãƒ‰
       const cfnDeleteOutput = document.querySelector(`[data-cfn-delete-output]`);
       if (cfnDeleteOutput && groupId === 'cfn-create') {
         const stackName = basePath;
@@ -401,28 +401,28 @@ function initPathBuilder() {
       }
     }
     
-    // “ü—Í‚ÉXV
+    // å…¥åŠ›æ™‚ã«æ›´æ–°
     if (baseInput) baseInput.addEventListener('input', updatePaths);
     if (subInput) subInput.addEventListener('input', updatePaths);
     if (regionInput) regionInput.addEventListener('input', updatePaths);
     
-    // ‰Šú•\¦
+    // åˆæœŸè¡¨ç¤º
     updatePaths();
   });
 }
 
-// ƒy[ƒW“Ç‚İ‚İ‚É‰Šú‰»
+// ãƒšãƒ¼ã‚¸èª­ã¿è¾¼ã¿æ™‚ã«åˆæœŸåŒ–
 document.addEventListener('DOMContentLoaded', function() {
-  // ƒpƒX‘g‚İ—§‚Ä‹@”\‚ğ‰Šú‰»
+  // ãƒ‘ã‚¹çµ„ã¿ç«‹ã¦æ©Ÿèƒ½ã‚’åˆæœŸåŒ–
   initPathBuilder();
 });
 
 // ========================================
-// ƒeƒ“ƒvƒŒ[ƒg’uŠ·‹@”\
+// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆç½®æ›æ©Ÿèƒ½
 // ========================================
 
 /**
- * ƒeƒ“ƒvƒŒ[ƒg’è‹`iŠg’£‚µ‚â‚·‚¢‚æ‚¤‚ÉŠO•”‰»j
+ * ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå®šç¾©ï¼ˆæ‹¡å¼µã—ã‚„ã™ã„ã‚ˆã†ã«å¤–éƒ¨åŒ–ï¼‰
  */
 const TEMPLATES = {
   'cloudformation-yaml': `AWSTemplateFormatVersion: '2010-09-09'
@@ -538,15 +538,15 @@ Outputs:
 };
 
 /**
- * ƒeƒ“ƒvƒŒ[ƒg’uŠ·ˆ—
- * @param {string} template - ƒeƒ“ƒvƒŒ[ƒg•¶š—ñ
- * @param {Object} values - ’uŠ·‚·‚é’l‚ÌƒIƒuƒWƒFƒNƒg
- * @returns {string} ’uŠ·Œã‚Ì•¶š—ñ
+ * ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆç½®æ›å‡¦ç†
+ * @param {string} template - ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆæ–‡å­—åˆ—
+ * @param {Object} values - ç½®æ›ã™ã‚‹å€¤ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+ * @returns {string} ç½®æ›å¾Œã®æ–‡å­—åˆ—
  */
 function renderTemplate(template, values) {
   let result = template;
   
-  // ƒvƒŒ[ƒXƒzƒ‹ƒ_[‚ğ’uŠ·
+  // ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€ãƒ¼ã‚’ç½®æ›
   for (const [key, value] of Object.entries(values)) {
     const placeholder = new RegExp(`{{${key}}}`, 'g');
     result = result.replace(placeholder, value);
@@ -556,10 +556,10 @@ function renderTemplate(template, values) {
 }
 
 /**
- * ƒeƒ“ƒvƒŒ[ƒg¶¬‹@”\‚ğ‰Šú‰»
+ * ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆç”Ÿæˆæ©Ÿèƒ½ã‚’åˆæœŸåŒ–
  */
 function initTemplateGenerator() {
-  // .template-generator ƒNƒ‰ƒX‚ğ‚ÂƒRƒ“ƒeƒi‚ğˆ—
+  // .template-generator ã‚¯ãƒ©ã‚¹ã‚’æŒã¤ã‚³ãƒ³ãƒ†ãƒŠã‚’å‡¦ç†
   document.querySelectorAll('.template-generator').forEach(container => {
     const templateName = container.dataset.template;
     const groupId = container.dataset.group;
@@ -569,22 +569,22 @@ function initTemplateGenerator() {
       return;
     }
     
-    // ‚·‚×‚Ä‚Ì“ü—ÍƒtƒB[ƒ‹ƒh‚ğæ“¾
+    // ã™ã¹ã¦ã®å…¥åŠ›ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’å–å¾—
     const inputs = container.querySelectorAll('input[data-var]');
     
-    // XVŠÖ”
+    // æ›´æ–°é–¢æ•°
     function updateTemplate() {
-      // “ü—Í’l‚ğûW
+      // å…¥åŠ›å€¤ã‚’åé›†
       const values = {};
       inputs.forEach(input => {
         const varName = input.dataset.var;
         values[varName] = input.value.trim();
       });
       
-      // ƒeƒ“ƒvƒŒ[ƒg‚ğƒŒƒ“ƒ_ƒŠƒ“ƒO
+      // ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚’ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°
       const rendered = renderTemplate(TEMPLATES[templateName], values);
       
-      // o—Íæ‚ÌƒR[ƒhƒuƒƒbƒN‚ğXV
+      // å‡ºåŠ›å…ˆã®ã‚³ãƒ¼ãƒ‰ãƒ–ãƒ­ãƒƒã‚¯ã‚’æ›´æ–°
       const outputs = document.querySelectorAll(`[data-template-output="${groupId}"]`);
       outputs.forEach(output => {
         const codeElem = output.querySelector('code') || output;
@@ -592,18 +592,18 @@ function initTemplateGenerator() {
       });
     }
     
-    // Še“ü—ÍƒtƒB[ƒ‹ƒh‚ÉƒCƒxƒ“ƒgƒŠƒXƒi[‚ğ’Ç‰Á
+    // å„å…¥åŠ›ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«ã‚¤ãƒ™ãƒ³ãƒˆãƒªã‚¹ãƒŠãƒ¼ã‚’è¿½åŠ 
     inputs.forEach(input => {
       input.addEventListener('input', updateTemplate);
     });
     
-    // ‰Šú•\¦
+    // åˆæœŸè¡¨ç¤º
     updateTemplate();
   });
 }
 
-// ƒy[ƒW“Ç‚İ‚İ‚É‰Šú‰»
+// ãƒšãƒ¼ã‚¸èª­ã¿è¾¼ã¿æ™‚ã«åˆæœŸåŒ–
 document.addEventListener('DOMContentLoaded', function() {
-  // ƒeƒ“ƒvƒŒ[ƒg¶¬‹@”\‚ğ‰Šú‰»
+  // ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆç”Ÿæˆæ©Ÿèƒ½ã‚’åˆæœŸåŒ–
   initTemplateGenerator();
 });
