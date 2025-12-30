@@ -263,52 +263,6 @@ details pre {
 }
 
 // ========================================
-// サイドバートグル機能
-// ========================================
-
-.sidebar-toggle {
-  position: fixed;
-  top: 100px;
-  left: 10px;
-  z-index: 1000;
-  padding: 10px 15px;
-  background: #0366d6;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  transition: all 0.3s;
-}
-
-.sidebar-toggle:hover {
-  background: #0256c7;
-}
-
-// サイドバーが隠れている状態
-.side-bar.hidden {
-  display: none !important;
-}
-
-body.sidebar-hidden .main {
-  margin-left: 0 !important;
-  max-width: 100% !important;
-}
-
-body.sidebar-hidden .main-content-wrap {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-// モバイルではトグルボタンを非表示
-@media (max-width: 768px) {
-  .sidebar-toggle {
-    display: none;
-  }
-}
-
-// ========================================
 // トップに戻るボタン
 // ========================================
 
@@ -332,4 +286,160 @@ body.sidebar-hidden .main-content-wrap {
 .scroll-to-top:hover {
   background: #0256c7;
   transform: translateY(-3px);
+}
+
+// ========================================
+// サイドバートグルボタンと検索ボックスの配置調整
+// ========================================
+
+// トグルボタンのスタイル
+.sidebar-toggle {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1001;  // 検索より前面に
+  padding: 10px 15px;
+  background: #0366d6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+  width: 50px;
+  height: 50px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-toggle:hover {
+  background: #0256c7;
+}
+
+// 検索ボックスを右側に移動
+.search {
+  position: fixed !important;
+  top: 10px !important;
+  right: 20px !important;
+  left: auto !important;
+  max-width: 300px !important;
+  z-index: 1000;
+}
+
+// 検索入力フィールド
+.search-input-wrap {
+  margin-left: 0 !important;
+}
+
+.search-input {
+  width: 100% !important;
+}
+
+// モバイル対応
+@media (max-width: 768px) {
+  .sidebar-toggle {
+    display: none;
+  }
+  
+  .search {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    max-width: 100% !important;
+  }
+}
+
+// サイドバーが隠れている状態
+.side-bar.hidden {
+  display: none !important;
+}
+
+body.sidebar-hidden .main {
+  margin-left: 0 !important;
+  max-width: 100% !important;
+}
+
+body.sidebar-hidden .main-content-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 70px;  // トグルボタンの高さ分
+}
+
+// ========================================
+// ヘッダーのレイアウト調整
+// ========================================
+
+// トグルボタン
+.sidebar-toggle {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1001;
+  padding: 0;
+  background: #0366d6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 20px;
+  width: 45px;
+  height: 45px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-toggle:hover {
+  background: #0256c7;
+}
+
+// ヘッダー全体を調整
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  padding-left: 70px;  // トグルボタンの幅分
+}
+
+// 検索ボックスをヘッダー右側に配置
+.search-container {
+  margin-left: auto;
+  margin-right: 20px;
+}
+
+.search {
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
+}
+
+// モバイル対応
+@media (max-width: 768px) {
+  .sidebar-toggle {
+    display: none;
+  }
+  
+  .main-header {
+    padding-left: 20px;
+  }
+}
+
+// サイドバーが隠れている状態
+.side-bar.hidden {
+  display: none !important;
+}
+
+body.sidebar-hidden .main {
+  margin-left: 0 !important;
+  max-width: 100% !important;
+}
+
+body.sidebar-hidden .main-content-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
 }
