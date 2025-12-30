@@ -269,10 +269,40 @@ function initSidebarToggle() {
 }
 
 // ========================================
+// トップに戻るボタン
+// ========================================
+
+function initScrollToTop() {
+  // ボタンを作成
+  const btn = document.createElement('button');
+  btn.className = 'scroll-to-top';
+  btn.innerHTML = '↑';
+  btn.setAttribute('aria-label', 'トップに戻る');
+  btn.style.display = 'none';
+  
+  document.body.appendChild(btn);
+  
+  // スクロール時の表示/非表示
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      btn.style.display = 'block';
+    } else {
+      btn.style.display = 'none';
+    }
+  });
+  
+  // クリック時の動作
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// ========================================
 // 初期化
 // ========================================
 
 document.addEventListener('DOMContentLoaded', function() {
   initTextBuilder();
   initSidebarToggle();
+  initScrollToTop();
 });

@@ -18,3 +18,12 @@ footer_content: "Copyright &copy; 2025. AWS学習用ドキュメント"
 
 plugins:
   - jekyll-remote-theme
+
+# カラーテーマ
+color_scheme: light  # または dark
+
+# ユーザーが切り替えられるようにする
+color_scheme_toggle: true
+
+# パンくずリストを有効化
+breadcrumb_nav: true
