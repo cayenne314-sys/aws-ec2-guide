@@ -263,9 +263,9 @@ function initSidebarToggle() {
     }
   });
   
-  // デフォルトで隠す場合（オプション）
-  document.querySelector('.side-bar')?.classList.add('hidden');
-  document.body.classList.add('sidebar-hidden');
+  // // デフォルトで隠す場合（オプション）
+  // document.querySelector('.side-bar')?.classList.add('hidden');
+  // document.body.classList.add('sidebar-hidden');
 }
 
 // ========================================
