@@ -25,40 +25,39 @@ permalink: /
 
 このガイドは、AWS初心者がEC2インスタンスを構築するための手順をまとめたものです。
 
-- ローカル環境（VSCode）を使用
-- CloudFormationテンプレートで構築
-- Amazon Linux 2023を使用
-- Apache httpdによる簡易Webサーバーを自動起動
+* ローカル環境（VSCode）を使用
+* CloudFormationテンプレートで構築
+* Amazon Linux 2023を使用
+* Apache httpdによる簡易Webサーバーを自動起動
 
 ---
 
-## 📚 目次
+## 📚 コンテンツ
 
 ### 準備
-- [キーペア作成](docs/keypair.md)
+
+EC2インスタンスを構築する前に必要な準備を行います。
+
+* [キーペア作成](docs/keypair) - SSH接続用のキーペアを作成
 
 ### 構築方法
-- [VSCodeでCloudFormationテンプレートを使った構築](docs/cloudformation.md)
 
----
+実際にEC2インスタンスを構築します。
 
-## このガイドについて
-
-このガイドは、AWS初心者がEC2インスタンスを構築するための手順をまとめたものです。
-
-- ローカル環境（VSCode）を使用
-- CloudFormationテンプレートで構築
-- Amazon Linux 2023を使用
-- Apache httpdによる簡易Webサーバーを自動起動
+* [CloudFormation構築](docs/cloudformation) - VSCodeでテンプレートを使った構築
 
 ---
 
 ## 前提条件
 
-- AWSアカウントを作成済み
-- AWS CLIをインストール済み
-- VSCodeをインストール済み
+このガイドを始める前に、以下を準備してください。
+
+* ✅ AWSアカウントを作成済み
+* ✅ AWS CLIをインストール済み
+* ✅ VSCodeをインストール済み
 
 ---
 
-最終更新: 2025年12月
+## サポート
+
+質問や問題がある場合は、[GitHub Issues](https://github.com/cayenne314-sys/aws-ec2-guide/issues)で報告してください。
