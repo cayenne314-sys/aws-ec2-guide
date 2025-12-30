@@ -6,6 +6,10 @@ description: "AWS初心者向けEC2構築手順書"
 permalink: /
 ---
 
+<!-- 共通CSS・JS読み込み -->
+<!-- <link rel="stylesheet" href="../assets/css/style.css"> -->
+<script src="./assets/js/command-generator.js"></script>
+
 # AWS EC2構築ガイド
 {: .fs-9 }
 

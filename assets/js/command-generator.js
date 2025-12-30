@@ -226,9 +226,53 @@ function initTextBuilder() {
 }
 
 // ========================================
+// サイドバートグル機能
+// ========================================
+
+function initSidebarToggle() {
+  // トグルボタンを作成
+  const toggleBtn = document.createElement('button');
+  toggleBtn.className = 'sidebar-toggle';
+  // toggleBtn.innerHTML = '☰ メニュー';
+  toggleBtn.innerHTML = '☰';
+  toggleBtn.setAttribute('aria-label', 'サイドバーを開く/閉じる');
+  
+  // ボタンをページに追加
+  const mainContent = document.querySelector('.main-content-wrap');
+  if (mainContent) {
+    mainContent.insertBefore(toggleBtn, mainContent.firstChild);
+  }
+  
+  // クリックイベント
+  toggleBtn.addEventListener('click', () => {
+    const sidebar = document.querySelector('.side-bar');
+    const body = document.body;
+    
+    if (sidebar) {
+      sidebar.classList.toggle('hidden');
+      body.classList.toggle('sidebar-hidden');
+      
+      // ボタンのテキストを変更
+      if (sidebar.classList.contains('hidden')) {
+        // toggleBtn.innerHTML = '☰ メニューを表示';
+        toggleBtn.innerHTML = '☰';
+      } else {
+        // toggleBtn.innerHTML = '✕ メニューを隠す';
+        toggleBtn.innerHTML = '✕';
+      }
+    }
+  });
+  
+  // デフォルトで隠す場合（オプション）
+  // document.querySelector('.side-bar')?.classList.add('hidden');
+  // document.body.classList.add('sidebar-hidden');
+}
+
+// ========================================
 // 初期化
 // ========================================
 
 document.addEventListener('DOMContentLoaded', function() {
   initTextBuilder();
+  initSidebarToggle();
 });

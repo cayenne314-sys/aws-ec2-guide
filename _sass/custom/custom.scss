@@ -261,3 +261,49 @@ details pre {
   word-wrap: break-word !important;
   overflow-x: visible !important;
 }
+
+// ========================================
+// サイドバートグル機能
+// ========================================
+
+.sidebar-toggle {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  padding: 10px 15px;
+  background: #0366d6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: all 0.3s;
+}
+
+.sidebar-toggle:hover {
+  background: #0256c7;
+}
+
+// サイドバーが隠れている状態
+.side-bar.hidden {
+  display: none !important;
+}
+
+body.sidebar-hidden .main {
+  margin-left: 0 !important;
+  max-width: 100% !important;
+}
+
+body.sidebar-hidden .main-content-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// モバイルではトグルボタンを非表示
+@media (max-width: 768px) {
+  .sidebar-toggle {
+    display: none;
+  }
+}

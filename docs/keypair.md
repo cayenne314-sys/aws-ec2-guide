@@ -5,6 +5,10 @@ parent: 準備
 nav_order: 1
 ---
 
+<!-- 共通CSS・JS読み込み -->
+<!-- <link rel="stylesheet" href="../assets/css/style.css"> -->
+<script src="../assets/js/command-generator.js"></script>
+
 # キーペア作成
 
 EC2インスタンスにSSH接続するためにキーペア(.pemファイル)の作成が必要です。
