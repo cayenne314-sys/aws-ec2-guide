@@ -225,6 +225,7 @@ aws cloudformation delete-stack --stack-name ec2-test-stack --region ap-northeas
 aws cloudformation describe-stacks --stack-name ec2-test-stack --query "Stacks[0].StackStatus"
 ```
 {: data-output-group="cfn-status" data-command-type="cfn-describe"}
+{: .wrap-code}
 
 **出力例**:
 - `"CREATE_IN_PROGRESS"` - 作成中
@@ -321,7 +322,7 @@ aws ec2 describe-security-groups --group-ids sg-xxxxxxxxxxxxxxxxx
 ```
 {: data-output-group="sg-info" data-command-type="sg-describe"}
 
-現在の設定（SSH: 0.0.0.0/0、HTTP: 0.0.0.0/0）が確認できます。
+現在の設定（SSH、HTTP）が確認できます。
 
 ---
 

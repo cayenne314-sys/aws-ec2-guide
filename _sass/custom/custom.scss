@@ -443,3 +443,41 @@ body.sidebar-hidden .main-content-wrap {
   max-width: 1200px;
   margin: 0 auto;
 }
+
+// ========================================
+// シンタックスハイライトを完全に無効化
+// ========================================
+
+// すべてのハイライトクラスをリセット
+.highlight,
+.highlight *,
+[class^="language-"],
+[class^="language-"] *,
+code,
+code * {
+  color: #24292e !important;
+  background: transparent !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  text-decoration: none !important;
+}
+
+// コードブロックの背景色のみ維持
+.highlight,
+[class^="language-"],
+div[class*="highlighter-rouge"] {
+  background: #f6f8fa !important;
+  border-radius: 6px;
+  padding: 16px;
+}
+
+pre {
+  background: #f6f8fa !important;
+}
+
+// インラインコード
+code {
+  background: #f6f8fa !important;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
