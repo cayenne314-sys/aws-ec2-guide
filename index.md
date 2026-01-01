@@ -40,17 +40,17 @@ EC2インスタンスを構築する前に必要な準備を行います。
 
 * [キーペア作成](docs/keypair) - SSH接続用のキーペアを作成
 
-### ツール
-
-AWS EC2構築に役立つツールとコマンドリファレンスを提供します。
-
-* [コマンドリファレンス](docs/command-reference) - よく使うAWS CLIコマンドを簡単に生成
-
 ### 構築方法
 
 実際にEC2インスタンスを構築します。
 
 * [CloudFormation構築](docs/cloudformation) - VSCodeでテンプレートを使った構築
+
+### ツール
+
+AWS EC2構築に役立つツールとコマンドリファレンスを提供します。
+
+* [コマンドリファレンス](docs/command-reference) - よく使うAWS CLIコマンドを簡単に生成
 
 ---
 
