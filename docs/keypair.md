@@ -18,7 +18,7 @@ EC2インスタンスにSSH接続するためにキーペア(.pemファイル)�
 
 {: .no_toc }
 
-1. TOC
+* TOC
 {:toc}
 
 </details>
