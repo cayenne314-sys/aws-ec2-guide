@@ -24,7 +24,8 @@ const COMMAND_TEMPLATES = {
   'ec2-get-public-ip': 'aws ec2 describe-instances --instance-ids {{INSTANCE_ID}} --query "Reservations[0].Instances[0].PublicIpAddress" --output text',
   'ec2-get-public-dns': 'aws ec2 describe-instances --instance-ids {{INSTANCE_ID}} --query "Reservations[0].Instances[0].PublicDnsName" --output text',
   
-  // EC2停止系コマンド
+  // EC2起動停止系コマンド
+  'ec2-start': 'aws ec2 start-instances --instance-ids {{INSTANCE_ID}}',
   'ec2-stop': 'aws ec2 stop-instances --instance-ids {{INSTANCE_ID}}',
 
   // セキュリティグループ系コマンド
