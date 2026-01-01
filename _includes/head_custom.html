@@ -1,0 +1,69 @@
+<style>
+/* ========================================
+   シンタックスハイライトを完全に無効化
+   ======================================== */
+
+/* 既存のスタイル（そのまま） */
+body .main-content .highlight span,
+body .main-content pre code span,
+body .main-content [class*="language-"] span,
+body .main-content [class*="highlighter-"] span {
+  color: #24292e !important;
+  background: transparent !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+}
+
+body .highlight .nb,
+body .highlight .n,
+body .highlight .s2,
+body .highlight .s1,
+body .highlight .k,
+body .highlight .o,
+body .highlight .p,
+body .highlight .c,
+body .highlight .cm,
+body .highlight span[class] {
+  color: #24292e !important;
+  background: transparent !important;
+  font-weight: normal !important;
+}
+
+/* ========================================
+   コードブロックのサイズ調整（追加）
+   ======================================== */
+
+/* 行間を詰める */
+.highlight pre,
+.highlight code,
+pre code {
+  line-height: 1.4 !important;  /* デフォルトより小さく */
+}
+
+/* パディングを調整 */
+.highlight {
+  padding: 12px 16px !important;  /* 上下を小さく */
+}
+
+.highlight pre {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* コードブロック全体 */
+div[class*="highlighter-rouge"] {
+  margin: 16px 0 !important;
+}
+
+/* 最小の高さを設定しない */
+.highlight,
+.highlight pre,
+pre code {
+  min-height: auto !important;
+}
+
+.highlight code,
+pre code {
+  font-size: 0.75rem !important;  /* 元のサイズに合わせる */
+}
+</style>
